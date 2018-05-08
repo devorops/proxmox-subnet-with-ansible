@@ -1,7 +1,7 @@
 ## Setup environment/PW
 * source setup_environment.sh
 
-## Validates newly created from template inventory! Should be executed over every new inventory/every new subnet that we are about to create. The passed inventory will be the one that you have manually changed the necessary host/group variables to make the inventory right for the new subnet. Fail from this task means you have forgot to change/uncomment some necessary variables, so you need to go and do it. This is a good practive step in order to avoid mistakes!
+## Validates newly created from template inventory! Should be executed over every new inventory/every new subnet that we are about to create. The passed inventory will be the one that you have manually changed the necessary host/group variables to make the inventory right for the new subnet. Fail from this task means you have forgot to change/uncomment some necessary variables, so you need to go and do it. This is a good practive step in order to avoid mistakes
 * ansible-inventory -i inventory/Template --list 
 
 ## Ansible Commands Used
