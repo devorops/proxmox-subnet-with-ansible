@@ -1,0 +1,8 @@
+sysname: DevopsTestRouter
+external_ip_address: 10.5.200.209
+external_subnetmask: 255.255.252.0
+default_gateway: 10.5.200.0
+internal_ip_address: 10.5.202.17
+dhcp_pool_name: DevopsTestNet
+dhcp_network: 10.5.202.16
+dns_by_dhcp: 8.8.8.8

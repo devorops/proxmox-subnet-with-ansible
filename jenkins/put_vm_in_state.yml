@@ -1,0 +1,10 @@
+- name: include variables
+  include_vars: ../vars/vault.yml
+- name: Change ALL subnet VMs state
+  proxmox_kvm:
+    api_user    : root@pam
+    api_password: "{{ alchemy_password }}"
+    api_host    : "{{ alchemy_node_internal_subnet_ip }}"
+    node        : "{{ alchemy_node_internal_subnet_ip }}"
+    vmid        : "{{ vmid }}"
+    state       : "{{ state }}"

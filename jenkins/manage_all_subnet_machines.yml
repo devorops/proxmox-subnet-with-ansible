@@ -1,0 +1,7 @@
+## Put all subnet VM-s in state 
+- hosts: "CurrentSubnetHosts" 
+  serial: 1
+  tasks:
+    - name: Put all subnet VM-s in state 
+      import_tasks: put_vm_in_state.yml
+

@@ -1,0 +1,67 @@
+---
+## 1. Create User/Group/Role and assign privileges
+- hosts: "AlchemyNode"
+  tasks:
+    - name:  Create User/Group/Role and assign privileges
+      import_tasks: create_subnet_user_and_set_privileges.yml
+
+## 2. Cloning admin-subnet VMs that will be converted to subnet-templates
+- hosts: "SubnetTemplates"
+  serial: 1
+  tasks:
+    - name: Cloning admin-subnet VMs that will be converted to subnet-templates 
+      import_tasks: create_vm_from_template.yml 
+
+## 3. Creating the necessary subnet templates 
+- hosts: "SubnetTemplates"
+  serial: 1
+  tasks:
+    - name: Creating the necessary subnet templates
+      import_tasks: create_subnet_templates.yml
+
+## 4. Create subnet Admin VMs from the templates created in previos step
+- hosts: "AdminVMs"
+  serial: 1
+  tasks:
+    - name: Create subnet Admin VMs from the templates created in previos step
+      import_tasks: create_vm_from_template.yml
+
+## 5. Creating user defined machines from the provided inventory
+- hosts: "UserVMs"
+  serial: 1
+  tasks:
+    - name: Creating user defined machines from the provided inventory
+      import_tasks: create_vm_from_template.yml
+
+## 6. Generate cfg file for the perimeter router
+- import_playbook: create_perimeter_config/prepare_hp_config_file.yml
+
+## 7. Generate static ip-mac entries in the perimeter DHCP router
+- import_playbook: create_perimeter_config/generate_dhcp_entries.yml
+
+## 8. Starting Perimeter Router
+- hosts: "PerimeterRouter"
+  tasks:
+    - name: Starting Perimeter Router
+      import_tasks: start_perimeter_router.yml
+
+## 9. Waiting for Perimeter-router to become available 
+- hosts: "SubnetRouterLocalhost"
+  tasks:
+    - name: Waiting for Perimeter-router to become available..
+      import_tasks: wait_router_to_become_available.yml
+
+## 10. Applying the generated configuration to perimeter router
+- import_playbook: ansible_hpe_cw7/hp_install_config.yml
+
+
+
+
+
+
+## (optional) 11. Store all details/logs in Database/File:
+# 
+
+## (optional) 12. Send email with all details to customer
+# Necessary vars: email, name
+#

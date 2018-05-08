@@ -1,0 +1,13 @@
+- name: Waiting for up to 80 seconds for port 22 on 10.5.200.207 to become available..
+  wait_for:
+    port: 22
+    host: '10.5.200.207'
+    #delay: 10
+    timeout: 80
+  no_log: True
+  failed_when: false
+  connection: local
+- name: Waiting a bit for the Hypervisor to catch up..
+  pause:
+    seconds: 6
+
