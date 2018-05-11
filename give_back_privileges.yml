@@ -1,0 +1,8 @@
+- name: Give back the privileges for user "{{ userId }}" for vmid {{ vmid }}
+  shell:
+    pveum aclmod /vms/{{ vmid }} -user {{ userId }}@pve -role {{ roleId }}
+  when: (groupWillBeCreated == false and vmid <= toVmid and state == "absent")
+- name: Give back the privileges for group "{{ groupId }}" for vmid {{ vmid }}
+  shell:
+    pveum aclmod /vms/{{ vmid }} -group {{ groupId }} -role {{ roleId }}
+  when: (groupWillBeCreated == true and fromVmid <= vmid and state == "absent")

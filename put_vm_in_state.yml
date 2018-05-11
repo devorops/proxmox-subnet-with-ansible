@@ -4,7 +4,7 @@
   proxmox_kvm:
     api_user    : root@pam
     api_password: "{{ alchemy_password }}"
-    api_host    : "{{ alchemy_node_internal_subnet_ip }}"
-    node        : "{{ alchemy_node_internal_subnet_ip }}"
+    api_host    : "{{ api_host }}"
+    node        : "{{ alchemy_node_name }}"
     vmid        : "{{ vmid }}"
     state       : "{{ state }}"

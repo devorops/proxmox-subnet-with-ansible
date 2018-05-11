@@ -1,7 +1,7 @@
-- name: Waiting for up to 80 seconds for port 22 on 10.5.200.207 to become available..
+- name: Waiting for up to 80 seconds for port 22 on {{ initial_ip_address }} to become available..
   wait_for:
     port: 22
-    host: '10.5.200.207'
+    host: "{{ initial_ip_address }}"
     #delay: 10
     timeout: 80
   no_log: True
@@ -10,4 +10,4 @@
 - name: Waiting a bit for the Hypervisor to catch up..
   pause:
     seconds: 6
-
+  connection: local

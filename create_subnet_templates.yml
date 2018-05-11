@@ -3,40 +3,30 @@
   no_log: true
 - name: Checking if VM-id "{{ vmid }}" is a template or regular virtual machine..
   lineinfile:
-    path: /etc/pve/nodes/{{ alchemy_node}}/qemu-server/{{ vmid }}.conf
+    path: /etc/pve/nodes/{{ alchemy_node_name }}/qemu-server/{{ vmid }}.conf
     line: "template: 1"
   check_mode: yes
   no_log: True
   register: contents_would_have
   failed_when: false
 - name: Check the VM with VM-id "{{ vmid }}" current state..
-  proxmox_kvm:
-    api_user     : root@pam
-    api_password : "{{ alchemy_password }}"
-    api_host     : "{{ alchemy_node }}"
-    vmid         : "{{ vmid }}"
-    node         : "{{ alchemy_node }}"
-    state        : current
+  shell:
+    pvesh get /nodes/{{ alchemy_node_name }}/qemu/{{ vmid }}/status/current
   register: results
   no_log: true
   when: contents_would_have.changed == true
 - name: Changing the machine with VM-id "{{ vmid }}" vmbridge to the unique one given in the inventory for this subnet( "{{ vm_bridge }}" )..
   replace:
-    path: /etc/pve/nodes/{{ alchemy_node }}/qemu-server/{{ vmid }}.conf
+    path: /etc/pve/nodes/{{ alchemy_node_name }}/qemu-server/{{ vmid }}.conf
     regexp: 'vmbr14'
     replace: "{{ vm_bridge }}"
     backup: yes
   when: (contents_would_have.changed == true and results.status == "stopped")
 - name: Converting VM with VM-id "{{ vmid }}" to a template..
   shell: 
-    pvesh create /nodes/{{ alchemy_node }}/qemu/{{ vmid }}/template
+    pvesh create /nodes/{{ alchemy_node_name }}/qemu/{{ vmid }}/template
   when: (contents_would_have.changed == true and results.status == "stopped")
 - name: Deleting the created machine with VM-id "{{ vmid }}" to a template..
-  proxmox_kvm:
-    api_user     : root@pam
-    api_password : "{{ alchemy_password }}"
-    api_host     : "{{ alchemy_node }}"
-    vmid         : "{{ vmid }}"
-    node         : "{{ alchemy_node }}"
-    state        : absent
+  shell:
+    pvesh get /nodes/{{ alchemy_node_name }}/qemu/{{ vmid }}/status/absent  
   when: keepTemplateAfterVMIsCreated == false

@@ -1,19 +1,17 @@
 ---
-  - name: Applying install configuration file..
-    hosts: 10.5.200.207
-    gather_facts: no
-    connection: local
-    vars:
-      username: hp
-      password: hp123
-    tasks:
-      - name:  Applying the generated configuration('/configs/template.cfg') to the subnet-perimeter router. This is going to be the new running config
-        comware_install_config:
-          config_file='./configs/template.cfg'
-          commit_changes=true
-          username={{ username }}
-          password={{ password }}
-          hostname={{ inventory_hostname }}
-          #no_log: True
-        failed_when: false
-        async: 10
+- hosts: perimeterRouter 
+  gather_facts: no
+  vars:
+    username: hp
+    password: hp123
+  tasks:
+    - name:  Applying the generated configuration('/configs/template.cfg') to the subnet-perimeter router. This is going to be the new running config
+      comware_install_config:
+        config_file='./configs/template.cfg'
+        commit_changes=true
+        username={{ username }}
+        password={{ password }}
+        hostname={{ inventory_hostname }}
+        #no_log: True
+      failed_when: false
+      async: 10

@@ -5,9 +5,6 @@
 #  (optional for the future:
 #  {{ static-bind ip-address {ip} mask {mask} hardware-address {mac} }}
 #  {{ ssh_enabled }} {{ scp_enabled }} {{ netconf_enabled }} {{ user }} {{ password_hash }} {{ cwmp }}
- 
-- hosts: localhost
-  become: false
-  tasks:
-    - name: Creating perimeter router configuration file from J2 configuration template 
-      template: src=../ansible_hpe_cw7/configs/template.cfg.j2 dest=../ansible_hpe_cw7/configs/template.cfg
+
+- name: Creating perimeter router configuration file from J2 configuration template 
+  template: src=../ansible_hpe_cw7/configs/template.cfg.j2 dest=../ansible_hpe_cw7/configs/template.cfg

@@ -4,4 +4,9 @@
   tasks:
     - name: Put all subnet VM-s in state 
       import_tasks: put_vm_in_state.yml
+- hosts: "???????????"
+  serial: 1
+  tasks:
+    - name: Put all subnet VM-s in state
+      import_tasks: set_back_privileges.yml
 

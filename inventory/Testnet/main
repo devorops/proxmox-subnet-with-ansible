@@ -1,49 +1,83 @@
-10.5.200.207
 [Subnet-Extended:children]
-AlchemyNode
-SubnetRouterLocalhost
-CurrentSubnetHosts
+Localhost-ExecutableGroup
+AlchemyNode-ExecutableGroup
+#InternalSubnetAlchemyNodeGroup
 
 [Subnet-Extended:vars]
 fromVmid=6001
 toVmid=6011
 internal_subnetmask=255.255.255.240
 
-[SubnetRouterLocalhost]
-localhost ansible_host=127.0.0.1 ansible_connection=local
+#----------------------------------------------------------------------------------------
+
+[Localhost-ExecutableGroup:vars]
+ansible_host=127.0.0.1
+ansible_user=root
+
+[Localhost-ExecutableGroup:children]
+PerimeterRouterGroup
+Subnet
+
+[Localhost-ExecutableGroup]
+localhost
+[PerimeterRouterGroup]
+perimeterRouter username=hp password=hp123
+
+#-----
 
 [Subnet]
 [Subnet:vars]
-ansible_host=10.5.1.17
-ansible_user=root
+api_host=10.5.1.17
 storage=HDD-Storage
 vm_bridge=vmbr9
-alchemy_node=alchemy3
+alchemy_node_name=alchemy3
 
 [Subnet:children]
-AdminVMs
-UserVMs
-AlchemyNode
-SubnetTemplates
+UserVMsGroup
+AdminVMsGroup
+SubnetTemplatesGroup
 
-[AlchemyNode]
-alchemyNode
-[AlchemyNode:vars]
-alchemy_node_internal_subnet_ip=10.5.200.64
-
-[UserVMs]
-[UserVMs:vars]
+[UserVMsGroup]
+[UserVMsGroup:vars]
 full_clone=no
 
-[SubnetTemplates]
-[SubnetTemplates:vars]
+[AdminVMsGroup]
+[AdminVMsGroup:vars]
+full_clone=no
+
+[SubnetTemplatesGroup]
+[SubnetTemplatesGroup:vars]
 full_clone=yes
 keepTemplateAfterVMIsCreated=true
+ansible_host=10.5.1.17
+
+#-----
+
+#----------------------------------------------------------------------------------------
+
+[AlchemyNode-ExecutableGroup:vars]
+ansible_host=10.5.1.17
+ansible_user=root
+
+[AlchemyNode-ExecutableGroup:children]
+PrivilegesGroup
+[AlchemyNode-ExecutableGroup]
+alchemyNode
+
+[PrivilegesGroup]
+alchemyNodePrivileges
+
+#----------------------------------------------------------------------------------------
+
+[InternalSubnetAlchemyNodeGroup:vars]
+api_host=10.5.200.64
+
+[InternalSubnetAlchemyNodeGroup:children]
+CurrentSubnetHosts
+
+[InternalSubnetAlchemyNodeGroup]
+internalSubnetAlchemyNode
 
 [CurrentSubnetHosts]
-[CurrentSubnetHosts:vars]
-alchemy_node_internal_subnet_ip=10.5.200.64
 
-[AdminVMs]
-[AdminVMs:vars]
-full_clone=no
+#----------------------------------------------------------------------------------------

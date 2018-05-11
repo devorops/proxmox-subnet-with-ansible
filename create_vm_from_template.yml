@@ -5,12 +5,12 @@
   proxmox_kvm:
     api_user    : root@pam
     api_password: "{{ alchemy_password }}"
-    api_host    : "{{ alchemy_node }}"
+    api_host    : "{{ api_host }}"
     clone       : "ANY_VALUE"
     newid       : "{{ vmid }}"
     vmid        : "{{ template_vmid }}"
     name        : "{{ new_machine_name }}"
-    node        : "{{ alchemy_node }}" 
+    node        : "{{ alchemy_node_name }}" 
     full        : "{{ full_clone }}"
     storage     : "{{ storage }}"
 - name: Waiting a bit for the Hypervisor to catch up..

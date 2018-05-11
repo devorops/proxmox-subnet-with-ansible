@@ -1,4 +1,4 @@
-[SubnetTemplates:children]
+[SubnetTemplatesGroup:children]
 PerimeterRouterTemplate
 AnsibleJenkinsMachineTemplate
 BaseTemplate
@@ -26,7 +26,7 @@ template_vmid=10005
 
 #----------------------------------------------------------------------
 
-[AdminVMs:children]
+[AdminVMsGroup:children]
 PerimeterRouter
 AnsibleJenkinsMachine
 
@@ -36,6 +36,7 @@ perRouter
 vmid=6000
 new_machine_name=testPerimeterTestNet1
 template_vmid=6014
+state=started
 
 [AnsibleJenkinsMachine]
 ansibleJenkinsVM
