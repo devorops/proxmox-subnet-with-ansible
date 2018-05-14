@@ -6,8 +6,6 @@
     timeout: 80
   no_log: True
   failed_when: false
-  connection: local
 - name: Waiting a bit for the Hypervisor to catch up..
   pause:
     seconds: 6
-  connection: local

@@ -7,7 +7,6 @@
 
 ## 2. Cloning admin-subnet VMs that will be converted to subnet-templates
 - hosts: "SubnetTemplatesGroup"
-  #serial: 1
   #connection: local
   tasks:
     - name: Cloning admin-subnet VMs that will be converted to subnet-templates 
@@ -15,27 +14,25 @@
 
 ## 3. Creating the necessary subnet templates 
 - hosts: "SubnetTemplatesGroup"
-  #serial: 1
   tasks:
     - name: Creating the necessary subnet templates
       import_tasks: create_subnet_templates.yml
 
 ## 4. Create subnet Admin VMs from the templates created in previos step
 - hosts: "AdminVMsGroup"
-  #serial: 1
   tasks:
     - name: Create subnet Admin VMs from the templates created in previos step
       import_tasks: create_vm_from_template.yml
 
 ## 5. Creating user defined machines from the provided inventory
 - hosts: "UserVMsGroup"
-  #serial: 1
   tasks:
     - name: Creating user defined machines from the provided inventory
       import_tasks: create_vm_from_template.yml
 
 ## 6. Generate cfg file for the perimeter router
-- hosts: localhost
+- hosts: perimeterRouter
+  connection: local
   tasks:
     - name: Generate cfg file for the perimeter router
       import_tasks: create_perimeter_config/prepare_hp_config_file.yml
@@ -44,13 +41,14 @@
 - import_playbook: create_perimeter_config/generate_dhcp_entries.yml
 
 ## 8. Starting Perimeter Router
-- hosts: perimeterRouter
+- hosts: perRouter
   tasks:
     - name: Starting Perimeter Router
       import_tasks: put_vm_in_state.yml
 
 ## 9. Waiting for Perimeter-router to become available 
 - hosts: perimeterRouter
+  connection: local
   tasks:
     - name: Waiting for Perimeter-router to become available..
       import_tasks: wait_router_to_become_available.yml

@@ -12,7 +12,7 @@ internal_subnetmask=255.255.255.240
 
 [Localhost-ExecutableGroup:vars]
 ansible_host=127.0.0.1
-ansible_user=root
+ansible_connection=local
 
 [Localhost-ExecutableGroup:children]
 PerimeterRouterGroup
@@ -21,16 +21,16 @@ Subnet
 [Localhost-ExecutableGroup]
 localhost
 [PerimeterRouterGroup]
-perimeterRouter username=hp password=hp123
+perimeterRouter username=hp password=hp123 
 
 #-----
 
 [Subnet]
 [Subnet:vars]
-api_host=10.5.1.17
 storage=HDD-Storage
 vm_bridge=vmbr9
 alchemy_node_name=alchemy3
+api_host=10.5.1.17
 
 [Subnet:children]
 UserVMsGroup
@@ -50,6 +50,8 @@ full_clone=no
 full_clone=yes
 keepTemplateAfterVMIsCreated=true
 ansible_host=10.5.1.17
+ansible_user=root
+ansible_connection=ssh 
 
 #-----
 

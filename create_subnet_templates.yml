@@ -14,18 +14,18 @@
     pvesh get /nodes/{{ alchemy_node_name }}/qemu/{{ vmid }}/status/current
   register: results
   no_log: true
-  when: contents_would_have.changed == true
+  # when: contents_would_have.changed == true
 - name: Changing the machine with VM-id "{{ vmid }}" vmbridge to the unique one given in the inventory for this subnet( "{{ vm_bridge }}" )..
   replace:
     path: /etc/pve/nodes/{{ alchemy_node_name }}/qemu-server/{{ vmid }}.conf
     regexp: 'vmbr14'
     replace: "{{ vm_bridge }}"
     backup: yes
-  when: (contents_would_have.changed == true and results.status == "stopped")
+  when: (contents_would_have.changed == true and (results.stdout | from_json).status == "stopped")
 - name: Converting VM with VM-id "{{ vmid }}" to a template..
   shell: 
     pvesh create /nodes/{{ alchemy_node_name }}/qemu/{{ vmid }}/template
-  when: (contents_would_have.changed == true and results.status == "stopped")
+  when: (contents_would_have.changed == true and (results.stdout | from_json).status == "stopped")
 - name: Deleting the created machine with VM-id "{{ vmid }}" to a template..
   shell:
     pvesh get /nodes/{{ alchemy_node_name }}/qemu/{{ vmid }}/status/absent  
