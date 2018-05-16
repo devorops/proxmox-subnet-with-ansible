@@ -1,10 +1,2 @@
-## Config File preperation requieres the following vars to be defined"
-#  {{ sysname }} {{ external_ip_address }} {{ external_subnetmask }} {{ default_gateway }}
-#  {{ internal_ip_address }} {{ internal_subnetmask }}
-#  {{ dhcp_pool_name }} {{ dhcp_network }} {{ dns-by-dhcp }}
-#  (optional for the future:
-#  {{ static-bind ip-address {ip} mask {mask} hardware-address {mac} }}
-#  {{ ssh_enabled }} {{ scp_enabled }} {{ netconf_enabled }} {{ user }} {{ password_hash }} {{ cwmp }}
-
 - name: Creating perimeter router configuration file from J2 configuration template 
   template: src=ansible_hpe_cw7/configs/template.cfg.j2 dest=ansible_hpe_cw7/configs/template.cfg

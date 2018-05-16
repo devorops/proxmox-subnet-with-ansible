@@ -7,3 +7,5 @@ internal_ip_address: 10.5.202.17
 dhcp_pool_name: DevopsTestNet
 dhcp_network: 10.5.202.16
 dns_by_dhcp: 8.8.8.8
+username: hp 
+password: hp123

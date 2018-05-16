@@ -1,27 +1,38 @@
+# TBD: Explain all Variables and groups, remove mentions of alchemy, 
+# doublecheck reuse of variables 
+# and usage of user/pw (should be coming from the vault).
+#
+[all:vars]
+proxmox_password={{ vault_proxmox_password }}
+
+#---------------------------------------------------------------------------------------------
+## Common Parent/Wrapping Group which provides global variables throughout all the hosts in
+## the inventory
+#---------------------------------------------------------------------------------------------
+
 [Subnet-Extended:children]
-Localhost-ExecutableGroup
-AlchemyNode-ExecutableGroup
-#InternalSubnetAlchemyNodeGroup
+Localhost-ExecutableGroup       # 
+ProxmoxNode-ExecutableGroup     # Proxmox-Node Settings
+#InternalSubnetProxmoxNodeGroup # used for Jenkins, but not fully implemented yet
 
 [Subnet-Extended:vars]
 fromVmid=6001
 toVmid=6011
 internal_subnetmask=255.255.255.240
 
-#----------------------------------------------------------------------------------------
-
+#---------------------------------------------------------------------------------------------
+## All hosts in these sub-groups are using a connection via localhost with different variables
+## (due to the use of the paramiko/netconf connection used in the ANSIBLE-HPE-CW7 library) 
+#---------------------------------------------------------------------------------------------
 [Localhost-ExecutableGroup:vars]
 ansible_host=127.0.0.1
 ansible_connection=local
 
 [Localhost-ExecutableGroup:children]
-PerimeterRouterGroup
 Subnet
 
 [Localhost-ExecutableGroup]
 localhost
-[PerimeterRouterGroup]
-perimeterRouter username=hp password=hp123 
 
 #-----
 
@@ -29,7 +40,7 @@ perimeterRouter username=hp password=hp123
 [Subnet:vars]
 storage=HDD-Storage
 vm_bridge=vmbr9
-alchemy_node_name=alchemy3
+proxmox_node_name=alchemy3
 api_host=10.5.1.17
 
 [Subnet:children]
@@ -53,32 +64,35 @@ ansible_host=10.5.1.17
 ansible_user=root
 ansible_connection=ssh 
 
-#-----
+#---------------------------------------------------------------------------------------------
+## All hosts in these sub-groups are using a direct connection to the proxmox node
+#---------------------------------------------------------------------------------------------
 
-#----------------------------------------------------------------------------------------
-
-[AlchemyNode-ExecutableGroup:vars]
+[ProxmoxNode-ExecutableGroup:vars]
 ansible_host=10.5.1.17
 ansible_user=root
 
-[AlchemyNode-ExecutableGroup:children]
+[ProxmoxNode-ExecutableGroup:children]
 PrivilegesGroup
-[AlchemyNode-ExecutableGroup]
-alchemyNode
+
+[ProxmoxNode-ExecutableGroup]
+proxmoxNode
 
 [PrivilegesGroup]
-alchemyNodePrivileges
+proxmoxNodePrivileges
 
-#----------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
+## This is currently not used and should be put into a feature branch!
+#---------------------------------------------------------------------------------------------
 
-[InternalSubnetAlchemyNodeGroup:vars]
+[InternalSubnetProxmoxNodeGroup:vars]
 api_host=10.5.200.64
 
-[InternalSubnetAlchemyNodeGroup:children]
+[InternalSubnetProxmoxNodeGroup:children]
 CurrentSubnetHosts
 
-[InternalSubnetAlchemyNodeGroup]
-internalSubnetAlchemyNode
+[InternalSubnetProxmoxNodeGroup]
+internalSubnetProxmoxNode
 
 [CurrentSubnetHosts]
 

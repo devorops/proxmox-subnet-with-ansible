@@ -1,5 +1,5 @@
 ---
-- hosts: perimeterRouter 
+- hosts: perRouter 
   gather_facts: no
   vars:
     username: hp

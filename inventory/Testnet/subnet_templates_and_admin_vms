@@ -27,12 +27,12 @@ template_vmid=10005
 #----------------------------------------------------------------------
 
 [AdminVMsGroup:children]
-PerimeterRouter
 AnsibleJenkinsMachine
+PerimeterRouterGroup
 
-[PerimeterRouter]
+[PerimeterRouterGroup]
 perRouter
-[PerimeterRouter:vars]
+[PerimeterRouterGroup:vars]
 vmid=6000
 new_machine_name=testPerimeterTestNet1
 template_vmid=6014

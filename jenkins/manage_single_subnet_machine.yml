@@ -1,5 +1,5 @@
 ## Put single subnet VM in state
-- hosts: alchemyNode
+- hosts: proxmoxNode
   tasks:
     - name: Put single subnet VM in state
       import_tasks: put_vm_in_state.yml

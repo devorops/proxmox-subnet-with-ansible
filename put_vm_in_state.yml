@@ -3,8 +3,8 @@
 - name: Change ALL subnet VMs state
   proxmox_kvm:
     api_user    : root@pam
-    api_password: "{{ alchemy_password }}"
+    api_password: "{{ proxmox_password }}"
     api_host    : "{{ api_host }}"
-    node        : "{{ alchemy_node_name }}"
+    node        : "{{ proxmox_node_name }}"
     vmid        : "{{ vmid }}"
     state       : "{{ state }}"
