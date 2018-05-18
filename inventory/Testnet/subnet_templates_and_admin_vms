@@ -44,4 +44,4 @@ ansibleJenkinsVM
 vmid=6012
 new_machine_name=ansibleJenkinsMachineTestnet
 template_vmid=6013
-ip=10.5.202.18
+ansible_host=10.5.202.18

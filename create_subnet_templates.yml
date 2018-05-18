@@ -1,3 +1,6 @@
+- name: include enforce range variables
+  include_vars: vars/enforce_value_vars.yml
+  no_log: true
 - name: include variables
   include_vars: vars/vault.yml
   no_log: true
@@ -13,8 +16,8 @@
   shell:
     pvesh get /nodes/{{ proxmox_node_name }}/qemu/{{ vmid }}/status/current
   register: results
-  no_log: true
-  # when: contents_would_have.changed == true
+  #  no_log: true
+  when: contents_would_have.changed == true
 - name: Changing the machine with VM-id "{{ vmid }}" vmbridge to the unique one given in the inventory for this subnet( "{{ vm_bridge }}" )..
   replace:
     path: /etc/pve/nodes/{{ proxmox_node_name }}/qemu-server/{{ vmid }}.conf
