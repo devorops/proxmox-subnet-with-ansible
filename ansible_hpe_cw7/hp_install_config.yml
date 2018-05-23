@@ -1,9 +1,6 @@
 ---
 - hosts: perRouter 
   gather_facts: no
-  vars:
-    username: hp
-    password: hp123
   tasks:
     - name:  Applying the generated configuration('/configs/template.cfg') to the subnet-perimeter router. This is going to be the new running config
       comware_install_config:
@@ -11,7 +8,8 @@
         commit_changes=true
         username={{ username }}
         password={{ password }}
-        hostname={{ inventory_hostname }}
+        hostname={{ initial_ip_address }}
         #no_log: True
       failed_when: false
       async: 10
+

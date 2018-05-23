@@ -1,2 +1,2 @@
-#fromVmid: 6001
-#toVmid: 6011
+proxmox_node_external_ip: 10.5.1.17
+proxmox_node_internal_ip: 10.5.200.64

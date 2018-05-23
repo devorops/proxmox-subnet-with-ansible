@@ -10,4 +10,4 @@
       shell:
         pveum aclmod /vms/{{ vmid }} -group {{ groupId }} -role {{ roleId }}
       when: groupWillBeCreated == true
-  when: (check_for_range == false or ( vmid <= toVmid and fromVmid <= vmid and state == "absent" ))
+  when: (force_variable_check == false or ( vmid <= toVmid and fromVmid <= vmid and state == "absent" ))

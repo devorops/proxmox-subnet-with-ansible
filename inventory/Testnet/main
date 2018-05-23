@@ -4,36 +4,47 @@
 #
 [all:vars]
 proxmox_password={{ vault_proxmox_password }}
-check_for_range=False
+force_variable_check=False
 
 #---------------------------------------------------------------------------------------------
 ## Common Parent/Wrapping Group which provides global variables throughout all the hosts in
 ## the inventory
 #---------------------------------------------------------------------------------------------
 
-[Subnet-Extended:children]
-Localhost-ExecutableGroup       # 
-ProxmoxNode-ExecutableGroup     # Proxmox-Node Settings
-#InternalSubnetProxmoxNodeGroup # used for Jenkins, but not fully implemented yet
+[ExtendedVariablesGroup:children]
+LocalhostGroup                  # 
+ProxmoxNodeGroup                # Proxmox-Node Settings
+Localhost-InternalSubnetGroup   # used by Internal Subnet Jenkins
+#ProxmoxNode-InternalSubnetGroup # used by Internal Subnet Jenkins
 
-[Subnet-Extended:vars]
+[ExtendedVariablesGroup:vars]
 fromVmid=6001
 toVmid=6011
 internal_subnetmask=255.255.255.240
+proxmox_node_name=alchemy3
+
+[SubnetTemplatesGroup]
+[LocalhostTemplatesGroup:children]
+SubnetTemplatesGroup
+[ProxmoxTemplatesGroup:children]
+SubnetTemplatesGroup
 
 #---------------------------------------------------------------------------------------------
 ## All hosts in these sub-groups are using a connection via localhost with different variables
 ## (due to the use of the paramiko/netconf connection used in the ANSIBLE-HPE-CW7 library) 
 #---------------------------------------------------------------------------------------------
-[Localhost-ExecutableGroup:vars]
-ansible_host=127.0.0.1
+
+[LocalhostGroup:vars]
 ansible_connection=local
+api_host={{ proxmox_node_external_ip }}
 
-[Localhost-ExecutableGroup:children]
-Subnet
+[LocalhostGroup:children]
+UserVMsGroup
+AdminVMsGroup
+LocalhostTemplatesGroup
 
-#[Localhost-ExecutableGroup]
-#localhost
+[LocalhostGroup]
+localhost
 
 #-----
 
@@ -41,13 +52,12 @@ Subnet
 [Subnet:vars]
 storage=HDD-Storage
 vm_bridge=vmbr9
-proxmox_node_name=alchemy3
-api_host=10.5.1.17
 
 [Subnet:children]
 UserVMsGroup
 AdminVMsGroup
-SubnetTemplatesGroup
+LocalhostTemplatesGroup
+ProxmoxTemplatesGroup
 
 [UserVMsGroup]
 [UserVMsGroup:vars]
@@ -57,44 +67,56 @@ full_clone=no
 [AdminVMsGroup:vars]
 full_clone=no
 
-[SubnetTemplatesGroup]
-[SubnetTemplatesGroup:vars]
+[LocalhostTemplatesGroup]
+[LocalhostTemplatesGroup:vars]
 full_clone=yes
 keepTemplateAfterVMIsCreated=true
-ansible_host=10.5.1.17
-ansible_user=root
-ansible_connection=ssh 
 
 #---------------------------------------------------------------------------------------------
 ## All hosts in these sub-groups are using a direct connection to the proxmox node
 #---------------------------------------------------------------------------------------------
 
-[ProxmoxNode-ExecutableGroup:vars]
-ansible_host=10.5.1.17
+[ProxmoxNodeGroup:vars]
+ansible_host={{ proxmox_node_external_ip }}
 ansible_user=root
 
-[ProxmoxNode-ExecutableGroup:children]
-PrivilegesGroup
+[ProxmoxNodeGroup:children]
+ProxmoxPrivilegesGroup
+ProxmoxTemplatesGroup
 
-[ProxmoxNode-ExecutableGroup]
+[ProxmoxNodeGroup]
 proxmoxNode
 
-[PrivilegesGroup]
+[ProxmoxPrivilegesGroup]
 proxmoxNodePrivileges
+[PrivilegesGroup:children]
+ProxmoxPrivilegesGroup
 
 #---------------------------------------------------------------------------------------------
-## This is currently not used and should be put into a feature branch!
+## Hosts used by the Ansible/Jenkins subnet management machine
 #---------------------------------------------------------------------------------------------
 
-[InternalSubnetProxmoxNodeGroup:vars]
-api_host=10.5.200.64
+[Localhost-InternalSubnetGroup:vars]
+api_host={{ proxmox_node_internal_ip }}
+ansible_connection=local
 
-[InternalSubnetProxmoxNodeGroup:children]
+[Localhost-InternalSubnetGroup:children]
 CurrentSubnetHosts
 
-[InternalSubnetProxmoxNodeGroup]
-internalSubnetProxmoxNode
+[Localhost-InternalSubnetGroup]
+localhostInternalSubnet
 
 [CurrentSubnetHosts]
 
 #----------------------------------------------------------------------------------------
+[ProxmoxNode-InternalSubnetGroup:vars]
+ansible_host={{ proxmox_node_internal_ip }}
+ansible_user=root
+
+[ProxmoxNode-InternalSubnetGroup:children]
+ProxmoxInternalPrivileges
+[PrivilegesGroup:children]
+ProxmoxInternalPrivileges
+
+[ProxmoxInternalPrivileges]
+proxmoxNodeInternalPrivileges

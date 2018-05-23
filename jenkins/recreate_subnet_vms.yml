@@ -1,0 +1,4 @@
+- hosts: "UserVMsGroup"
+  tasks:
+    - name: Creating user defined machines from the provided inventory
+      import_tasks: ../create_vm_from_template.yml

@@ -1,9 +1,0 @@
-## Put single subnet VM in state
-- hosts: localhost
-  tasks:
-    - name: Put single subnet VM in state
-      import_tasks: put_vm_in_state.yml
-- hosts: internalSubnetProxmoxNode
-  tasks:
-    - name: Give back privileges..
-      import_tasks: set_back_privileges.yml

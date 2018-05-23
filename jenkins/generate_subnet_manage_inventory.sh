@@ -86,5 +86,7 @@ echo "[CurrentSubnetHosts:vars]" >> ../inventory/generatedHostsFile
 echo "state=$IN_STATE" >> ../inventory/generatedHostsFile
 echo "ansible_host=$SERVER" >> ../inventory/generatedHostsFile
 echo "ansible_user=root" >> ../inventory/generatedHostsFile
+echo "[PrivilegesGroup:children]" >> ../inventory/generatedHostsFile
+"CurrentSubnetHostsldren" >> ../inventory/generatedHostsFile
 
 rm -f /tmp/proxvm-*.json

@@ -1,7 +1,7 @@
 - name: Clean inventory path
   file:
     state: absent
-    path: "{{ playbook_dir }}"
+    path: "/var/lib/jenkins/infrastructure/inventory/{{ playbook_dir }}"
 - name: TODO
   copy:
     src: "{{ playbook_dir }}"

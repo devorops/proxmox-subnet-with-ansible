@@ -12,4 +12,4 @@
     node        : "{{ proxmox_node_name }}"
     vmid        : "{{ vmid }}"
     state       : "{{ state }}"
-  when: (check_for_range == false or ( vmid <= toVmid and fromVmid <= vmid ))
+  when: (force_variable_check == false or ( vmid <= toVmid and fromVmid <= vmid ))
