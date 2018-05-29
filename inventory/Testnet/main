@@ -15,7 +15,8 @@ force_variable_check=False
 LocalhostGroup                  # 
 ProxmoxNodeGroup                # Proxmox-Node Settings
 Localhost-InternalSubnetGroup   # used by Internal Subnet Jenkins
-#ProxmoxNode-InternalSubnetGroup # used by Internal Subnet Jenkins
+ProxmoxNode-InternalSubnetGroup # used by Internal Subnet Jenkins
+CurrentSubnetHosts
 
 [ExtendedVariablesGroup:vars]
 fromVmid=6001
@@ -101,12 +102,10 @@ api_host={{ proxmox_node_internal_ip }}
 ansible_connection=local
 
 [Localhost-InternalSubnetGroup:children]
-CurrentSubnetHosts
+CurrentSubnetHostsLocalhost
 
 [Localhost-InternalSubnetGroup]
 localhostInternalSubnet
-
-[CurrentSubnetHosts]
 
 #----------------------------------------------------------------------------------------
 [ProxmoxNode-InternalSubnetGroup:vars]
@@ -120,3 +119,5 @@ ProxmoxInternalPrivileges
 
 [ProxmoxInternalPrivileges]
 proxmoxNodeInternalPrivileges
+
+[CurrentSubnetHosts]

@@ -1,9 +1,6 @@
 - name: include variables
   include_vars: vars/vault.yml
   no_log: true
-- name: include enforce value variables
-  include_vars: vars/enforce_value_vars.yml
-  no_log: true
 - block:
     - name: Cloning a VM with Vm-id "{{ vmid }}" from a Proxmox VM template with VM-id "{{ template_vmid }}" on "{{ storage }}" storage..
       proxmox_kvm:
@@ -20,4 +17,4 @@
     - name: Waiting a bit for the Hypervisor to catch up..
       pause:
         seconds: 10
-  when: ( force_variable_check == false or ( vmid <= toVmid and fromVmid <= vmid ))
+  when: ( force_variable_check == false or ( vmid | int <= toVmid | int and fromVmid | int <= vmid | int ))

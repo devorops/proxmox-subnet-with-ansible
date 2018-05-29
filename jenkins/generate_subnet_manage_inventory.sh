@@ -69,15 +69,16 @@ NODES=$(curl -s -k https://$SERVER:8006/api2/json/nodes -b "PVEAuthCookie=$TOKEN
 
 rm -f ../inventory/generatedHostsFile
 
-echo "[CurrentSubnetHosts]" >> ../inventory/generatedHostsFile
-
 count=0
 for NODE in $(echo $NODES); do
     curl -s -k https://$SERVER:8006/api2/json/nodes/$NODE/qemu -b "PVEAuthCookie=$TOKEN" > /tmp/proxvm-qemu.json
     for VMID in $(cat /tmp/proxvm-qemu.json | jq -r .data[].vmid); do
       if [ $VMID -le $TO_VMID ] && [ $VMID -ge $FROM_VMID ]; then
         count=$((count+1))
-	echo "vm$count vmid=$VMID" >> ../inventory/generatedHostsFile
+        echo "[CurrentSubnetHosts]" >> ../inventory/generatedHostsFile
+	echo "subnetHost$count vmid=$VMID" >> ../inventory/generatedHostsFile
+        echo "[CurrentSubnetHostsLocalhost]" >> ../inventory/generatedHostsFile
+        echo "subnetHostLocal$count vmid=$VMID" >> ../inventory/generatedHostsFile
       fi
     done
 done
@@ -86,7 +87,10 @@ echo "[CurrentSubnetHosts:vars]" >> ../inventory/generatedHostsFile
 echo "state=$IN_STATE" >> ../inventory/generatedHostsFile
 echo "ansible_host=$SERVER" >> ../inventory/generatedHostsFile
 echo "ansible_user=root" >> ../inventory/generatedHostsFile
+echo "[CurrentSubnetHostsLocalhost:vars]" >> ../inventory/generatedHostsFile
+echo "state=$IN_STATE" >> ../inventory/generatedHostsFile
+echo "ansible_connection=local" >> ../inventory/generatedHostsFile
 echo "[PrivilegesGroup:children]" >> ../inventory/generatedHostsFile
-"CurrentSubnetHostsldren" >> ../inventory/generatedHostsFile
+echo "CurrentSubnetHosts" >> ../inventory/generatedHostsFile
 
 rm -f /tmp/proxvm-*.json

@@ -1,5 +1,5 @@
 ## Generating current subnet state inventory 
-- hosts: internalSubnetProxmoxNode
+- hosts: localhostInternalSubnet
   tasks:
     - name: include variables
       include_vars: ../vars/vault.yml

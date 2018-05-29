@@ -1,6 +1,3 @@
-- name: include enforce value variables
-  include_vars: vars/enforce_value_vars.yml
-  no_log: true
 - block:
     - name: Give back the privileges for user "{{ userId }}" for vmid {{ vmid }}
       shell:
@@ -10,4 +7,4 @@
       shell:
         pveum aclmod /vms/{{ vmid }} -group {{ groupId }} -role {{ roleId }}
       when: groupWillBeCreated == true
-  when: (force_variable_check == false or ( vmid <= toVmid and fromVmid <= vmid and state == "absent" ))
+  when: ( force_variable_check == false or ( state == "absent" and vmid | int <= toVmid | int and fromVmid | int  <= vmid | int ))
