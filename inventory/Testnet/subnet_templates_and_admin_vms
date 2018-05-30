@@ -24,8 +24,6 @@ vmid=6011
 new_machine_name=baseMachineTemplateTestnet
 template_vmid=10005
 
-#----------------------------------------------------------------------
-
 [AdminVMsGroup:children]
 AnsibleJenkinsMachine
 PerimeterRouterGroup
@@ -42,6 +40,6 @@ state=started
 ansibleJenkinsVM
 [AnsibleJenkinsMachine:vars]
 vmid=6012
+host_static_ip=10.5.202.18
 new_machine_name=ansibleJenkinsMachineTestnet
 template_vmid=6013
-ansible_host=10.5.202.18

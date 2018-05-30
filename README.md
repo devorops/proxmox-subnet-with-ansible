@@ -35,7 +35,7 @@ ansible-inventory -i inventory/Testnet --list
 In order to call main(parent) create_limited_access_subnet.yml do:
 * First do the 'environment set-up' step. After that from that same shell call:
 ```
-ansible-playbook create_limited_access_subnet.yml --vault-password-file ./vault_pass.py -i inventory/Testnet/  -vvv --extra-vars "@vars/enforce_value_vars.yml
+ansible-playbook create_limited_access_subnet.yml --vault-password-file ./vault_pass.py -i inventory/Testnet/  -vvv --extra-vars "@inventory/Testnet/enforce_value_vars.yml
 ```
 
 References used:

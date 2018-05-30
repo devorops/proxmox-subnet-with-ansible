@@ -101,7 +101,6 @@ for NODE in $(echo $NODES); do
       if [[ "$IP" = "" ]]; then
         IP=$(parse_inventory_and_get_ip_by_given_vmid -v $VMID -f $INVENTORY_DIR/subnet_templates_and_admin_vms)
       fi
-      echo "IP:$IP"
       if [[ "$IP" != "" ]]; then
         echo "Creating dhcp entry with following values: MASK=$SUBNET_MASK MAC=$HWADDR IP=$IP"
         HWADDR=$(echo $HWADDR|sed 's/\(.*\)/\L\1/')

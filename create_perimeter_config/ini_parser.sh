@@ -74,8 +74,9 @@ while read -r line || [ -n "$line" ]; do
                 VAR="$(echo -e "${VAR}" | tr -d '[:space:]')"
 		VAL="$(echo -e "${VAL}" | tr -d '[:space:]')"
                 VAR=$(echo $VAR)
-                if [ "$VAR" = "vmid" ] || [ "$VAR" = "ansible_host" ]; then
-                        if [[ "$VAL" =~ ^\".*\"$  ]]; then
+                if [ "$VAR" = "vmid" ] || [ "$VAR" = "host_static_ip" ]; then
+#echo "super"
+			if [[ "$VAL" =~ ^\".*\"$  ]]; then
                                 # remove existing double quotes
                                 VAL="${VAL%\"}"
                                 VAL="${VAL#\"}"
@@ -94,7 +95,7 @@ while read -r line || [ -n "$line" ]; do
  #                               break
  #                       fi
                 fi
-                if [ "$VAR" = "ansible_host" ]; then
+                if [ "$VAR" = "host_static_ip" ]; then
 			if [ "$VALID_VMID_SECTION" = true ]; then
                                 echo $VAL
 				break

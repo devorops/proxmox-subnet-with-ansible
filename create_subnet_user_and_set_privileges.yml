@@ -1,3 +1,6 @@
+- name: include variables
+  include_vars: '{{ inventory_dir }}/enforce_value_vars.yml'
+  no_log: true
 - name: Checking if user "{{ userId }}" exists in Proxmox..
   shell: "pvesh get /access/users/{{ userId }}@pve"
   no_log: True

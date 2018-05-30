@@ -1,7 +1,7 @@
 - hosts: "{{ host }}"
   tasks:
     - name: Putting {{ host }} VM/group of VMs in state..
-      import_tasks: ../put_vm_in_state.yml
+      import_tasks: put_vm_in_state.yml
 - hosts: "{{ proxmox_node }}"
   tasks:
     - name: Give back privileges..

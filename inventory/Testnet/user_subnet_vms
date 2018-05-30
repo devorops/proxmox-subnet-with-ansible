@@ -9,7 +9,7 @@ activeChestFlowerViolenceVM
 vmid=6002
 new_machine_name=VM1
 template_vmid=6011
-ansible_host=10.5.202.19
+host_static_ip=10.5.202.19
 full_clone=no
 
 [StupidRejoiceClassDressVM]
@@ -18,5 +18,5 @@ stupidRejoiceClassDressVM
 vmid=6003
 new_machine_name=VM6
 template_vmid=6011
-ansible_host=10.5.202.20
+host_static_ip=10.5.202.20
 full_clone=no

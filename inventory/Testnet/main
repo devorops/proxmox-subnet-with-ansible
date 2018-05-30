@@ -1,4 +1,4 @@
-# TBD: Explain all Variables and groups, remove mentions of alchemy, 
+# TBD: Explain all Variables and groups, remove mentions of proxmox, 
 # doublecheck reuse of variables 
 # and usage of user/pw (should be coming from the vault).
 #
@@ -19,16 +19,10 @@ ProxmoxNode-InternalSubnetGroup # used by Internal Subnet Jenkins
 CurrentSubnetHosts
 
 [ExtendedVariablesGroup:vars]
-fromVmid=6001
-toVmid=6011
-internal_subnetmask=255.255.255.240
-proxmox_node_name=alchemy3
-
-[SubnetTemplatesGroup]
-[LocalhostTemplatesGroup:children]
-SubnetTemplatesGroup
-[ProxmoxTemplatesGroup:children]
-SubnetTemplatesGroup
+fromVmid={{ from_vmid }}
+toVmid={{ to_vmid }}
+internal_subnetmask={{ subnetmask }}
+proxmox_node_name={{ node_name }}
 
 #---------------------------------------------------------------------------------------------
 ## All hosts in these sub-groups are using a connection via localhost with different variables
@@ -42,7 +36,6 @@ api_host={{ proxmox_node_external_ip }}
 [LocalhostGroup:children]
 UserVMsGroup
 AdminVMsGroup
-LocalhostTemplatesGroup
 
 [LocalhostGroup]
 localhost
@@ -51,15 +44,17 @@ localhost
 
 [Subnet]
 [Subnet:vars]
-storage=HDD-Storage
-vm_bridge=vmbr9
+storage={{ hdd_storage }}
+vm_bridge={{ bridge }}
 
 [Subnet:children]
 UserVMsGroup
 AdminVMsGroup
 LocalhostTemplatesGroup
 ProxmoxTemplatesGroup
+InternalUserVMsGroup
 
+[InternalUserVMsGroup]
 [UserVMsGroup]
 [UserVMsGroup:vars]
 full_clone=no
@@ -70,8 +65,11 @@ full_clone=no
 
 [LocalhostTemplatesGroup]
 [LocalhostTemplatesGroup:vars]
+api_host={{ proxmox_node_external_ip }}
 full_clone=yes
 keepTemplateAfterVMIsCreated=true
+[LocalhostTemplatesGroup:children]
+SubnetTemplatesGroup
 
 #---------------------------------------------------------------------------------------------
 ## All hosts in these sub-groups are using a direct connection to the proxmox node
@@ -103,11 +101,13 @@ ansible_connection=local
 
 [Localhost-InternalSubnetGroup:children]
 CurrentSubnetHostsLocalhost
+InternalUserVMsGroup
 
 [Localhost-InternalSubnetGroup]
 localhostInternalSubnet
 
 #----------------------------------------------------------------------------------------
+
 [ProxmoxNode-InternalSubnetGroup:vars]
 ansible_host={{ proxmox_node_internal_ip }}
 ansible_user=root
@@ -120,4 +120,11 @@ ProxmoxInternalPrivileges
 [ProxmoxInternalPrivileges]
 proxmoxNodeInternalPrivileges
 
+#----------------------------------------------------------------------------------------
+
 [CurrentSubnetHosts]
+[CurrentSubnetHostsLocalhost]
+[SubnetTemplatesGroup]
+[ProxmoxTemplatesGroup]
+[ProxmoxTemplatesGroup:children]
+SubnetTemplatesGroup
