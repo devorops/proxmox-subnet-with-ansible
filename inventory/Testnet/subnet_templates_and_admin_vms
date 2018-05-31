@@ -43,3 +43,4 @@ vmid=6012
 host_static_ip=10.5.202.18
 new_machine_name=ansibleJenkinsMachineTestnet
 template_vmid=6013
+state=started

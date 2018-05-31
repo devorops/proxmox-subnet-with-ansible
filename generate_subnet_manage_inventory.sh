@@ -67,7 +67,7 @@ TOKEN=$(echo $RESPONSE | jq -r .data.ticket)
 CSRF_PRESERVATION_TOKEN=$(echo $RESPONSE | jq -r .data.CSRFPreventionToken)
 NODES=$(curl -s -k https://$SERVER:8006/api2/json/nodes -b "PVEAuthCookie=$TOKEN" | jq -r .data[].node)
 
-rm -f ../inventory/generatedHostsFile
+rm -f inventory/generatedHostsFile
 
 count=0
 for NODE in $(echo $NODES); do
@@ -75,24 +75,24 @@ for NODE in $(echo $NODES); do
     for VMID in $(cat /tmp/proxvm-qemu.json | jq -r .data[].vmid); do
       if [ $VMID -le $TO_VMID ] && [ $VMID -ge $FROM_VMID ]; then
         count=$((count+1))
-        echo "[CurrentSubnetHosts]" >> ../inventory/generatedHostsFile
-	echo "subnetHost$count vmid=$VMID" >> ../inventory/generatedHostsFile
-        echo "[CurrentSubnetHostsLocalhost]" >> ../inventory/generatedHostsFile
-        echo "subnetHostLocal$count vmid=$VMID" >> ../inventory/generatedHostsFile
+        echo "[CurrentSubnetHosts]" >> inventory/generatedHostsFile
+	echo "subnetHost$count vmid=$VMID" >> inventory/generatedHostsFile
+        echo "[CurrentSubnetHostsLocalhost]" >> inventory/generatedHostsFile
+        echo "subnetHostLocal$count vmid=$VMID" >> inventory/generatedHostsFile
       fi
     done
 done
 
-echo "[CurrentSubnetHosts]" >> ../inventory/generatedHostsFile
-echo "[CurrentSubnetHostsLocalhost]" >> ../inventory/generatedHostsFile
-echo "[CurrentSubnetHosts:vars]" >> ../inventory/generatedHostsFile
-echo "state=$IN_STATE" >> ../inventory/generatedHostsFile
-echo "ansible_host=$SERVER" >> ../inventory/generatedHostsFile
-echo "ansible_user=root" >> ../inventory/generatedHostsFile
-echo "[CurrentSubnetHostsLocalhost:vars]" >> ../inventory/generatedHostsFile
-echo "state=$IN_STATE" >> ../inventory/generatedHostsFile
-echo "ansible_connection=local" >> ../inventory/generatedHostsFile
-echo "[PrivilegesGroup:children]" >> ../inventory/generatedHostsFile
-echo "CurrentSubnetHosts" >> ../inventory/generatedHostsFile
+echo "[CurrentSubnetHosts]" >> inventory/generatedHostsFile
+echo "[CurrentSubnetHostsLocalhost]" >> inventory/generatedHostsFile
+echo "[CurrentSubnetHosts:vars]" >> inventory/generatedHostsFile
+echo "state=$IN_STATE" >> inventory/generatedHostsFile
+echo "ansible_host=$SERVER" >> inventory/generatedHostsFile
+echo "ansible_user=root" >> inventory/generatedHostsFile
+echo "[CurrentSubnetHostsLocalhost:vars]" >> inventory/generatedHostsFile
+echo "state=$IN_STATE" >> inventory/generatedHostsFile
+echo "ansible_connection=local" >> inventory/generatedHostsFile
+echo "[PrivilegesGroup:children]" >> inventory/generatedHostsFile
+echo "CurrentSubnetHosts" >> inventory/generatedHostsFile
 
 rm -f /tmp/proxvm-*.json

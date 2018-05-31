@@ -1,9 +1,9 @@
 ---
 ## 1. Create User/Group/Role and assign privileges
-#- hosts: proxmoxNodePrivileges
-#  tasks:
-#    - name:  Create User/Group/Role and assign privileges
-#      import_tasks: create_subnet_user_and_set_privileges.yml
+- hosts: proxmoxNodePrivileges
+  tasks:
+    - name:  Create User/Group/Role and assign privileges
+      import_tasks: create_subnet_user_and_set_privileges.yml
 
 ## 2. Cloning admin-subnet VMs that will be converted to subnet-templates
 - hosts: "LocalhostTemplatesGroup"
@@ -54,15 +54,35 @@
 ## 10. Applying the generated configuration to perimeter router
 - import_playbook: ansible_hpe_cw7/hp_install_config.yml
 
+## 11. Starting Jenkins machine
+#- hosts: ansibleJenkinsVM
+#  tasks:
+#    - name: Starting Jenkins machine..
+#      import_tasks: put_vm_in_state.yml
 
+## 12. Waiting for Jenkins machine to become available
+#- hosts: ansibleJenkinsVM 
+#  tasks:
+#    - name: Waiting for Jenkin machine state(maybe 'current' ) to change ...
+#      import_tasks: wait_for_vm_to_become_available.yml
+ 
+## 13. Add route on the local management ansible machine to the Jenkins-Management machine in the subnet
+#- hosts: ?????
+#  tasks:
+#    - name: Adding route to the jenkins subnet machine..
+#      import_tasks: 
+ 
+## 14. Setting up the jenkins VM by copying inventory file for that subnet to the machine and e.t.c...
+#- hosts: ?????
+#  tasks:
+#    - name: Adding route to the jenkins subnet machine..
+#      import_tasks: set_up_jenkins.yml
+ 
 
-
-
-
-## (optional) 11. Store all details/logs in Database/File:
+## (optional) 16. Store all details/logs in Database/File:
 #
 
-## (optional) 12. Send email with all details to customer
+## (optional) 17. Send email with all details to customer
 # Necessary vars: email, name
 #
 

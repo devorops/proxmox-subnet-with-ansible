@@ -108,7 +108,7 @@ for NODE in $(echo $NODES); do
         HWADDR=$(echo $HWADDR|sed 's/.\{4\}/&-/g')
         HWADDR=$(echo $HWADDR|sed 's/.$//')
 
-        sed -i "/forbidden-ip/a\ static-bind ip-address $IP mask $SUBNET_MASK hardware-address $HWADDR" $INVENTORY_DIR/../../ansible_hpe_cw7/configs/template.cfg
+        sed -i "/forbidden-ip/a\ static-bind ip-address $IP mask $SUBNET_MASK hardware-address $HWADDR" ../ansible_hpe_cw7/configs/template.cfg
       fi  
     fi
   done

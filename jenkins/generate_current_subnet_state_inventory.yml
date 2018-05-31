@@ -1,8 +1,0 @@
-## Generating current subnet state inventory 
-- hosts: localhostInternalSubnet
-  tasks:
-    - name: include variables
-      include_vars: {{ inventory_dir }}/enforce_value_vars.yml
-#      no_log: true
-    - name: Generating subnet state inventory
-      shell: "{{ playbook_dir }}/generate_subnet_manage_inventory.sh -s {{ api_host }} -u root@pam -p {{ proxmox_password }} -f {{ fromVmid }} -t {{ toVmid|int -1 }} -i {{ state }}"
