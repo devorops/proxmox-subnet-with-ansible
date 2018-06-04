@@ -26,6 +26,12 @@ In order to set-up your environment and to set your vault decription pass in you
 ```
 source environment_set_up.sh
 ```
+### Add ansible to PATH
+Call the following command line: 
+```
+echo "export PATH=~/.local/bin:$PATH" >> ~./bashrc
+```
+
 ### Fix inventory template to fit your needs
 Validates newly created from template inventory! Failing in this task means you have forgot to change/uncomment some necessary variables. This is a good practive step in order to avoid mistakes! 
 ```
