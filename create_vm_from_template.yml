@@ -17,6 +17,9 @@
         node        : "{{ proxmox_node_name }}" 
         full        : "{{ full_clone }}"
         storage     : "{{ storage }}"
+      retries: 4
+      delay: 15
+      ignore_errors: yes
     - name: Waiting a bit for the Hypervisor to catch up..
       pause:
         seconds: 10

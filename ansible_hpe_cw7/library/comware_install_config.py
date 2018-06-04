@@ -44,7 +44,7 @@ def main():
     module = AnsibleModule(
         argument_spec=dict(
             config_file=dict(required=True, type='str'),
-            commit_changes=dict(required=True, choices=BOOLEANS, type='bool'),
+            commit_changes=dict(required=True, type='bool'),
             port=dict(default=830, type='int'),
             hostname=dict(required=True),
             username=dict(required=True),

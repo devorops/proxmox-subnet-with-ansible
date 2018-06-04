@@ -15,7 +15,7 @@ ansibleJenkinsTemplate
 [AnsibleJenkinsMachineTemplate:vars]
 vmid=6013
 new_machine_name=ansibleJenkinsTemplateTestnet
-template_vmid=10004
+template_vmid=10007
 
 [BaseTemplate]
 baseTemplate
@@ -34,7 +34,6 @@ perRouter
 vmid=6000
 new_machine_name=testPerimeterTestNet1
 template_vmid=6014
-state=started
 
 [AnsibleJenkinsMachine]
 ansibleJenkinsVM
@@ -43,4 +42,3 @@ vmid=6012
 host_static_ip=10.5.202.18
 new_machine_name=ansibleJenkinsMachineTestnet
 template_vmid=6013
-state=started

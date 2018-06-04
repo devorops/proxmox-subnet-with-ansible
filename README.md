@@ -24,7 +24,7 @@ if your cluster is well set-up the key will automatically distribute to all your
 ### Environment set-up
 In order to set-up your environment and to set your vault decription pass in your main(and in every other) shell that would gonna use for 'running subnet re-creation' call: 
 ```
-source setup_environment.sh
+source environment_set_up.sh
 ```
 ### Fix inventory template to fit your needs
 Validates newly created from template inventory! Failing in this task means you have forgot to change/uncomment some necessary variables. This is a good practive step in order to avoid mistakes! 
