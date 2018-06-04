@@ -25,10 +25,10 @@
 #      import_tasks: create_vm_from_template.yml
 
 ## 5. Creating user defined machines from the provided inventory
-#- hosts: "UserVMsGroup"
-#  tasks:
-#    - name: Creating user defined machines from the provided inventory
-#      import_tasks: create_vm_from_template.yml
+- hosts: "UserVMsGroup"
+  tasks:
+    - name: Creating user defined machines from the provided inventory
+      import_tasks: create_vm_from_template.yml
 
 ## 6. Generate cfg file for the perimeter router
 #- hosts: perRouter
@@ -40,49 +40,56 @@
 #- import_playbook: create_perimeter_config/generate_dhcp_entries.yml
 
 ## 8. Starting Perimeter Router
-- hosts: perRouter
-  tasks:
-    - name: Starting Perimeter Router..
-      import_tasks: put_vm_in_state.yml 
-      vars:
-        state: started
+#- hosts: perRouter
+#  tasks:
+#    - name: Starting Perimeter Router..
+#      import_tasks: put_vm_in_state.yml 
+#      vars: 
+#        state: started
 
 ## 9. Waiting for Perimeter-router to become available
-- hosts: perRouter
-  tasks:
-    - name: Waiting for Perimeter-router to become available..
-      import_tasks: wait_for_machine_port_to_become_available.yml 
-      vars:
-        port_to_wait_for: 22
+#- hosts: perRouter
+#  tasks:
+#    - name: Waiting for Perimeter-router to become available..
+#      import_tasks: wait_for_machine_port_to_become_available.yml 
+#      vars: 
+#      port_to_wait_for: 22
 
 ## 10. Applying the generated configuration to perimeter router
-- import_playbook: ansible_hpe_cw7/hp_install_config.yml
+#- import_playbook: ansible_hpe_cw7/hp_install_config.yml
 
 ## 11. Starting Jenkins machine
-- hosts: ansibleJenkinsVM
-  tasks:
-    - name: Starting Jenkins machine..
-      import_tasks: put_vm_in_state.yml 
-      vars: 
-        state: started
+#- hosts: ansibleJenkinsVM
+#  tasks:
+#    - name: Starting Jenkins machine..
+#      import_tasks: put_vm_in_state.yml 
+#      vars:      
+#        state: started
 
 ## 12. Waiting for Jenkins machine to become available
-- hosts: ansibleJenkinsVM 
-  tasks:
-    - name: Waiting for Jenkin machine state(maybe 'current' ) to change ...
-      import_tasks: wait_for_machine_port_to_become_available.yml port_to_wait_for=22
- 
+#- hosts: ansibleJenkinsVM 
+#  tasks:
+#    - name: Waiting for Jenkin machine state(maybe 'current' ) to change ...
+#      import_tasks: wait_for_machine_port_to_become_available.yml 
+#      vars:
+#        port_to_wait_for: 22
+
 ## 13. Add route on the local management ansible machine to the Jenkins-Management machine in the subnet
-- hosts: perRouter
-  tasks:
-    - name: Adding route to the jenkins subnet machine..
-      import_tasks: add_route_to_subnet.yml
- 
-## 14. Setting up the jenkins VM by copying inventory file for that subnet to the machine and e.t.c...
-#- hosts: ?????
+#- hosts: perRouter
 #  tasks:
 #    - name: Adding route to the jenkins subnet machine..
-#      import_tasks: set_up_jenkins.yml
+#      import_tasks: add_route_to_subnet.yml
+
+## add host
+- hosts: localhost
+  tasks:
+    - name: 
+      add_host:
+        name: "{{ hostvars['ansibleJenkinsVM']['host_static_ip'] }}"
+        ansible_user: root
+ 
+## 14. Setting up the jenkins VM by copying inventory file for that subnet to the machine and e.t.c...
+- import_playbook: set_up_jenkins.yml
  
 
 

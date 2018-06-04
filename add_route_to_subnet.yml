@@ -21,3 +21,4 @@
 - name: Adding the route to the subnet..
   command:
     ip route add {{ dhcp_network }}/{{ numbits.stdout }} via {{ external_ip_address }}
+  failed_when: false
