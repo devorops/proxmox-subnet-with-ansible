@@ -1,13 +1,13 @@
-- hosts: "{{ hostvars['ansibleJenkinsVM']['host_static_ip'] }}"
+- hosts: jenkinsVMM
   tasks:
     - name: Clean inventory path
       file:
         state: absent
-        path: "/var/lib/jenkins/infrastructure/inventory/"
+        path: "/var/lib/jenkins/infrastructure-github/inventory/"
     - name: TODO
       copy:
-        src: "{{ playbook_dir }}"
-        dest: /var/lib/jenkins/infrastructure/inventory/
+        src: "{{ playbook_dir }}/inventory"
+        dest: /var/lib/jenkins/infrastructure-github/inventory/
         owner: jenkins
         group: jenkins
         mode: 0777

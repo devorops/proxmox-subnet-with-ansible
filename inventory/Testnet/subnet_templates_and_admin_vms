@@ -22,7 +22,7 @@ baseTemplate
 [BaseTemplate:vars]
 vmid=6011
 new_machine_name=baseMachineTemplateTestnet
-template_vmid=10004
+template_vmid=10005
 
 [AdminVMsGroup:children]
 AnsibleJenkinsMachine
