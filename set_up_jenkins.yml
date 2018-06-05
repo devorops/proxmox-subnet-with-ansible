@@ -6,44 +6,8 @@
         path: "/var/lib/jenkins/infrastructure-github/inventory/"
     - name: TODO
       copy:
-        src: "{{ playbook_dir }}/inventory"
+        src: "{{ inventory_dir }}/"
         dest: /var/lib/jenkins/infrastructure-github/inventory/
         owner: jenkins
         group: jenkins
         mode: 0777
-#- name: TODO
-#  file:
-#    path: /var/lib/jenkins/infrastructure/inventory/main
-#    owner: root
-#    group: root
-#    mode: 0600
-#- name: TODO
-#  file:
-#    path: /var/lib/jenkins/infrastructure/inventory/subnet_templates_and_admin_vms
-#    owner: root
-#    group: root
-#    mode: 0600
-#- name: TODO
-#  file:
-#    path: /var/lib/jenkins/infrastructure/inventory/user_subnet_vms
-#    owner: guest
-#    group: guest
-#    mode: 0600
-#- name: TODO
-#  file:
-#    path: /var/lib/jenkins/infrastructure/inventory/group_vars
-#    owner: root
-#    group: root
-#    mode: 0600
-#- name: TODO
-#  file:
-#    path: /var/lib/jenkins/infrastructure/inventory/group_vars/PerimeterRouterGroup.yml
-#    owner: root
-#    group: root
-#    mode: 0600
-#- name: TODO
-#  file:
-#    path: /var/lib/jenkins/infrastructure/inventory/group_vars/PrivilegesGroup.yml
-#    owner: root
-#    group: root
-#    mode: 0600

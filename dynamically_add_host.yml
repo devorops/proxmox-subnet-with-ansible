@@ -3,3 +3,4 @@
     name: "{{ name_set }}"
     ansible_user: "{{ ansible_user_set }}"
     ansible_host: "{{ ansible_host_set }}"
+    inventory_dir: "{{ inventory_dir }}"

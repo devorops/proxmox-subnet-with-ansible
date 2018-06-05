@@ -48,3 +48,4 @@ References used:
 https://gist.github.com/huksley/d36b9a56386ec0a79a333ef74c047be8
 https://github.com/rudimeier/bash_ini_parser
 https://github.com/HPENetworking/ansible-hpe-cw7
+https://www.linuxquestions.org/questions/programming-9/bash-cidr-calculator-646701/

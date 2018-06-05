@@ -58,6 +58,16 @@
 ## 10. Applying the generated configuration to perimeter router
 - import_playbook: ansible_hpe_cw7/hp_install_config.yml
 
+
+
+
+
+# ---------------------------------------------------------------------------
+
+
+
+
+
 ## 11. Starting Jenkins machine
 - hosts: ansibleJenkinsVM
   tasks:
