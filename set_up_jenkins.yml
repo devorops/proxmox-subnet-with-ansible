@@ -8,6 +8,6 @@
       copy:
         src: "{{ inventory_dir }}/"
         dest: /var/lib/jenkins/infrastructure-github/inventory/
-        owner: jenkins
-        group: jenkins
+        owner: root
+        group: root
         mode: 0777

@@ -1,15 +1,10 @@
----
-- hosts: perRouter 
-  gather_facts: no
-  tasks:
-    - name:  Applying the generated configuration('/configs/template.cfg') to the subnet-perimeter router. This is going to be the new running config
-      comware_install_config:
-        config_file='./configs/template.cfg'
-        commit_changes=true
-        username={{ username }}
-        password={{ password }}
-        hostname={{ initial_ip_address }}
-        #no_log: True
-      failed_when: false
-      async: 10
-
+- name: apply it 
+  comware_install_config:
+    config_file='./ansible_hpe_cw7/configs/template.cfg'
+    commit_changes=true
+    username={{ username }}
+    password={{ password }}
+    hostname={{ hostvars['perRouter'][ip_address] }}
+    #no_log: True
+  failed_when: false
+  async: 10

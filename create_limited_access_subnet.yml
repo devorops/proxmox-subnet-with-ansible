@@ -56,7 +56,12 @@
         port_to_wait_for: 22
 
 ## 10. Applying the generated configuration to perimeter router
-- import_playbook: ansible_hpe_cw7/hp_install_config.yml
+- hosts: perRouter
+  tasks:
+    - name: 
+      import_tasks: ansible_hpe_cw7/hp_install_config.yml
+      vars:
+        ip_address: "initial_ip_address"
 
 
 
