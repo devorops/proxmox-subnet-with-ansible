@@ -19,7 +19,7 @@
     - name:
       import_tasks: ansible_hpe_cw7/hp_install_config.yml
       vars:
-        ip_address: "internal_ip_address"
+        ip_address: "{{ hostvars['perRouter']['initial_ip_address'] }}"
 
 # 5. Re-newing ip address from DHCP
 - hosts: localhost

@@ -54,6 +54,7 @@
       import_tasks: wait_for_machine_port_to_become_available.yml 
       vars: 
         port_to_wait_for: 22
+        ip_address: "{{ hostvars['perRouter']['initial_ip_address'] }}"
 
 ## 10. Applying the generated configuration to perimeter router
 - hosts: perRouter
@@ -61,10 +62,10 @@
     - name: 
       import_tasks: ansible_hpe_cw7/hp_install_config.yml
       vars:
-        ip_address: "initial_ip_address"
+        ip_address: "{{ hostvars['perRouter']['initial_ip_address'] }}"
 
 
-
+        
 
 
 # ---------------------------------------------------------------------------
@@ -94,14 +95,9 @@
       import_tasks: wait_for_machine_port_to_become_available.yml 
       vars:
         port_to_wait_for: 22
+        ip_address: "{{ hostvars['ansibleJenkinsVM']['host_static_ip'] }}"
 
-## 14. Add route on the local management ansible machine to the Jenkins-Management machine in the subnet
-- hosts: perRouter
-  tasks:
-    - name: Adding route to the jenkins subnet machine..
-      import_tasks: add_route_to_subnet.yml
-
-## 15. Adding ansible host dynamically to inventory..
+## 14. Adding ansible host dynamically to inventory..
 - hosts: localhost
   tasks:
     - name: Adding ansible host dynamically to inventory..
@@ -111,7 +107,7 @@
         ansible_user_set: root
         ansible_host_set: "{{ hostvars['ansibleJenkinsVM']['host_static_ip'] }}"
 
-## 16. setting up jenkins VM
+## 15. setting up jenkins VM
 - import_playbook: set_up_jenkins.yml
  
 
@@ -129,7 +125,7 @@
 
 
 
-## (optional) 16. Store all details/logs in Database/File:
+## (optional) 16. Store details/logs in Database/File:
 #
 
 ## (optional) 17. Send email with all details to customer
