@@ -17,10 +17,7 @@
         node        : "{{ proxmox_node_name }}" 
         full        : "{{ full_clone }}"
         storage     : "{{ storage }}"
-      retries: 4
-      delay: 15
-      ignore_errors: yes
     - name: Waiting a bit for the Hypervisor to catch up..
       pause:
-        seconds: 10
+        seconds: 20
   when: ( force_variable_check == false or ( vmid | int <= toVmid | int and fromVmid | int <= vmid | int ))
