@@ -29,13 +29,7 @@
       vars:
         state: started
 
-## 6. Creating the new Perimeter Router
-- hosts: perRouter
-  tasks:
-    - name: Creating the new Perimeter Router
-      import_tasks: create_vm_from_template.yml
-
-## 7. Starting Perimeter Router
+## 6. Starting Perimeter Router
 - hosts: perRouter
   tasks:
     - name: Starting Perimeter Router..
@@ -43,7 +37,7 @@
       vars:
         state: started
 
-## 8. Waiting for Perimeter-router to become available
+## 7. Waiting for Perimeter-router to become available
 - hosts: perRouter
   tasks:
     - name: Waiting for Perimeter-router to become available..
@@ -52,19 +46,10 @@
         port_to_wait_for: 22
         ip_address: "{{ hostvars['perRouter']['initial_ip_address'] }}"
 
-## 9. Applying the generated configuration to perimeter router
+## 8. Applying the generated configuration to perimeter router
 - hosts: perRouter
   tasks:
     - name:
       import_tasks: hp_install_config.yml
       vars:
         ip_address: "{{ hostvars['perRouter']['initial_ip_address'] }}"
-
-# 5. Re-newing ip address from DHCP
-#- hosts: localhost
-#  tasks:
-#    - name: Re-newing ip address
-#      shell: |
-#        dhclient -r
-#        dhclient
-

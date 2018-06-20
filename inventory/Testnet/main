@@ -23,6 +23,7 @@ fromVmid={{ from_vmid }}
 toVmid={{ to_vmid }}
 internal_subnetmask={{ subnetmask }}
 proxmox_node_name={{ node_name }}
+force_stop=False
 
 #---------------------------------------------------------------------------------------------
 ## All hosts in these sub-groups are using a connection via localhost with different variables
@@ -46,7 +47,6 @@ localhost
 [Subnet:vars]
 storage={{ hdd_storage }}
 vm_bridge={{ bridge }}
-force_stop=False
 
 [Subnet:children]
 UserVMsGroup
