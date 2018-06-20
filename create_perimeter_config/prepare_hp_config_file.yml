@@ -1,2 +1,0 @@
-- name: Creating perimeter router configuration file from J2 configuration template 
-  template: src=ansible_hpe_cw7/configs/template.cfg.j2 dest=ansible_hpe_cw7/configs/template.cfg

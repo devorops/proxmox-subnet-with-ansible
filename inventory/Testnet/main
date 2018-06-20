@@ -46,6 +46,7 @@ localhost
 [Subnet:vars]
 storage={{ hdd_storage }}
 vm_bridge={{ bridge }}
+force_stop=False
 
 [Subnet:children]
 UserVMsGroup

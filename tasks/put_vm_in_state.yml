@@ -2,7 +2,7 @@
   include_vars: '{{ inventory_dir }}/enforce_value_vars.yml'
   no_log: true
 - name: include vault variables(proxmox cluster password)
-  include_vars: vars/vault.yml
+  include_vars: '../vars/vault.yml'
   no_log: true
 - name: Change subnet VM/group of VMs state
   proxmox_kvm:
@@ -12,4 +12,7 @@
     node        : "{{ proxmox_node_name }}"
     vmid        : "{{ vmid }}"
     state       : "{{ state }}"
-  when: ( force_variable_check == false or ( vmid | int <= toVmid | int and fromVmid | int <= vmid | int ))
+    timeout     : 90
+    skiplock    :
+    force       : "{{ force_stop }}"
+  when: ( force_variable_check == false or ( vmid | int <= toVmid | int and fromVmid | int - 1 <= vmid | int ))

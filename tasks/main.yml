@@ -10,6 +10,7 @@
 ## 2. Cloning admin-subnet VMs that will be converted to subnet-templates
 - hosts: "LocalhostTemplatesGroup"
   connection: local
+  serial: 1
   tasks:
     - name: Cloning admin-subnet VMs that will be converted to subnet-templates 
       import_tasks: create_vm_from_template.yml
@@ -26,6 +27,7 @@
 
 ## 4. Create subnet Admin VMs from the templates created in previos step
 - hosts: "AdminVMsGroup"
+  serial: 1
   tasks:
     - name: Create subnet Admin VMs from the templates created in previos step
       import_tasks: create_vm_from_template.yml
@@ -34,6 +36,7 @@
 
 ## 5. Creating user defined machines from the provided inventory
 - hosts: "UserVMsGroup"
+  serial: 1
   tasks:
     - name: Creating user defined machines from the provided inventory
       import_tasks: create_vm_from_template.yml
@@ -44,12 +47,12 @@
 - hosts: perRouter
   tasks:
     - name: Generate cfg file for the perimeter router
-      import_tasks: create_perimeter_config/prepare_hp_config_file.yml
+      import_tasks: prepare_hp_config_file.yml
     - name: Pause
       pause:
 
 ## 7. Generate static ip-mac entries in the perimeter DHCP router
-- import_playbook: create_perimeter_config/generate_dhcp_entries.yml
+- import_playbook: generate_dhcp_entries.yml
 
 ## 8. Starting Perimeter Router
 - hosts: perRouter
@@ -72,7 +75,7 @@
 - hosts: perRouter
   tasks:
     - name: 
-      import_tasks: ansible_hpe_cw7/hp_install_config.yml
+      import_tasks: hp_install_config.yml
       vars:
         ip_address: "{{ hostvars['perRouter']['initial_ip_address'] }}"
     - name: Pause

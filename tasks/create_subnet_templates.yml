@@ -1,9 +1,6 @@
 - name: include variables
   include_vars: '{{ inventory_dir }}/enforce_value_vars.yml'
   no_log: true
-  #- name: include vault variables(proxmox cluster password)
-  #  include_vars: vars/vault.yml
-  #  no_log: true
 - name: Checking if VM-id "{{ vmid }}" is a template or regular virtual machine..
   lineinfile:
     path: /etc/pve/nodes/{{ proxmox_node_name }}/qemu-server/{{ vmid }}.conf
@@ -26,7 +23,7 @@
     backup: yes
   when: (contents_would_have.changed == true and (results.stdout | from_json).status == "stopped")
 - name: Converting VM with VM-id "{{ vmid }}" to a template..
-  shell: 
+  shell: |
     pvesh create /nodes/{{ proxmox_node_name }}/qemu/{{ vmid }}/template
   when: (contents_would_have.changed == true and (results.stdout | from_json).status == "stopped")
 - name: Deleting the created machine with VM-id "{{ vmid }}" to a template..

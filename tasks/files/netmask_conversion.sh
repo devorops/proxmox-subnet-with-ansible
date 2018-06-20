@@ -1,8 +1,6 @@
-- name: Convert calculates number of bit in a netmask
-  shell: |
-    nbits=0
+nbits=0
     IFS=.
-    subnetmask={{ subnetmask }}
+    subnetmask=$1
     for dec in $subnetmask; do
             case $dec in
                     255) let nbits+=8;;
@@ -17,8 +15,3 @@
             esac
     done
     echo "$nbits"
-  register: numbits
-- name: Adding the route to the subnet..
-  command:
-    ip route add {{ dhcp_network }}/{{ numbits.stdout }} via {{ external_ip_address }}
-  failed_when: false
