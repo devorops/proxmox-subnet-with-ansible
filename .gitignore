@@ -3,3 +3,4 @@
 *.swo
 /ansible_hpe_cw7/configs/template.cfg
 generatedHostsFile
+template.cfg

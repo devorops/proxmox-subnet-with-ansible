@@ -151,21 +151,28 @@ while [[ $# > 0 ]]; do
       shift
     ;;
 
-    -d)
+    -i)
       INVENTORY_DIR=$2
       shift
     ;;
 
+    -d)
+      PLAYBOOK_DIR=$2
+      shift
+    ;;
+
+
     -h|--help|-?)
       echo "Usage:"
       echo "$0 [options]"
-      echo " -u <username>   Username, default $USERNAME"
-      echo " -p <password>   Password, default $PASSWORD"
-      echo " -s <server>     Server to connect to, default $SERVER"
-      echo " -f <fromVmid>   First available subnet vmid number, default $FROM_VMID"
-      echo " -t <toVmid>     Last available subnet vmid number, default $TO_VMID"
-      echo " -m <subnetMask> Internal subnet-mask, default $SUBNET_MASK"
-      echo " -d <inventoryDir> The main inventory directory passed, default $INVENTORY_DIR"
+      echo " -u <username>     Username, default $USERNAME"
+      echo " -p <password>     Password, default $PASSWORD"
+      echo " -s <server>       Server to connect to, default $SERVER"
+      echo " -f <fromVmid>     First available subnet vmid number, default $FROM_VMID"
+      echo " -t <toVmid>       Last available subnet vmid number, default $TO_VMID"
+      echo " -m <subnetMask>   Internal subnet-mask, default $SUBNET_MASK"
+      echo " -i <inventoryDir> The main inventory directory passed, default $INVENTORY_DIR"
+      echo " -d <playbookDir>  The main  directory passed, default $PLAYBOOK_DIR"      
 
       exit 0
     ;;
@@ -208,7 +215,7 @@ for NODE in $(echo $NODES); do
         HWADDR=$(echo $HWADDR|sed 's/.\{4\}/&-/g')
         HWADDR=$(echo $HWADDR|sed 's/.$//')
 
-        sed -i "/forbidden-ip/a\ static-bind ip-address $IP mask $SUBNET_MASK hardware-address $HWADDR" $INVENTORY_DIR/../../tasks/files/template.cfg
+        sed -i "/forbidden-ip/a\ static-bind ip-address $IP mask $SUBNET_MASK hardware-address $HWADDR" $PLAYBOOK_DIR/files/template.cfg
       fi  
     fi
   done

@@ -16,6 +16,9 @@
     node        : "{{ proxmox_node_name }}" 
     full        : "{{ full_clone }}"
     storage     : "{{ storage }}"
-    timeout     : 90
+    timeout     : 290
     skiplock    : 
+  retries: 4
+  delay: 15
+  ignore_errors: yes
   when: ( force_variable_check == false or ( vmid | int <= toVmid | int and fromVmid | int - 1 <= vmid | int ))
