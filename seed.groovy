@@ -15,15 +15,21 @@ job("full-recreate-subnet") {
 
     }
 
+    wrappers {
+    	credentialsBinding {
+     	    string('VAULT_PASSWORD', 'VAULT_PASSWORD')
+        }
+    }
+
     scm {
         cloneWorkspace("cloneSources", "Any")
     }
 
     steps {
         shell '''export VAULT_PASSWORD=${VAULT_PASSWORD} 
-ansible-playbook tasks/generate_current_subnet_state_inventory.yml --vault-password-file ./vault_pass.py -i inventory --extra-vars "state=current force_variable_check=True" --extra-vars "@inventory/enforce_value_vars.yml" ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i inventory --extra-vars "state=stopped host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@inventory/enforce_value_vars.yml"
-ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i inventory --extra-vars "state=absent  host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@inventory/enforce_value_vars.yml"
-ansible-playbook tasks/recreate_subnet_vms.yml --vault-password-file ./vault_pass.py -i inventory --extra-vars "force_variable_check=True" --extra-vars "@inventory/enforce_value_vars.yml"
+ansible-playbook tasks/generate_current_subnet_state_inventory.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "state=current force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml" ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i inventory --extra-vars "state=stopped host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@inventory/enforce_value_vars.yml"
+ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "state=absent  host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
+ansible-playbook tasks/recreate_subnet_vms.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
         '''
     }
 }
@@ -93,7 +99,13 @@ job("manage-all-subnet-machines") {
             }
         }
     }
-  
+
+    wrappers {
+    	credentialsBinding {
+     	    string('VAULT_PASSWORD', 'VAULT_PASSWORD')
+        }
+    }
+
     authorization {
         permissions('admin', [
             'hudson.model.Item.Build',
@@ -118,13 +130,13 @@ job("manage-all-subnet-machines") {
     scm {
         cloneWorkspace('cloneSources', criteria = 'Any')
     }
-  
+
     steps {
         shell '''export VAULT_PASSWORD=${VAULT_PASSWORD}
-ansible-playbook tasks/generate_current_subnet_state_inventory.yml --vault-password-file ./vault_pass.py -i inventory --extra-vars "state=current force_variable_check=True" --extra-vars "@inventory/enforce_value_vars.yml"
-ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i inventory --extra-vars "state=stopped host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@inventory/enforce_value_vars.yml"
-ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i inventory --extra-vars "state=absent  host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@inventory/enforce_value_vars.yml"
-ansible-playbook tasks/recreate_subnet_vms.yml --vault-password-file ./vault_pass.py -i inventory --extra-vars "force_variable_check=True" --extra-vars "@inventory/enforce_value_vars.yml"
+ansible-playbook tasks/generate_current_subnet_state_inventory.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "state=current force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
+ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "state=stopped host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
+ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "state=absent  host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
+ansible-playbook tasks/recreate_subnet_vms.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
         '''
     }
 }
@@ -151,6 +163,12 @@ job("manage-single-subnet-machine") {
         ])
     }
 
+    wrappers {
+    	credentialsBinding {
+     	    string('VAULT_PASSWORD', 'VAULT_PASSWORD')
+        }
+    }
+  
     scm {
         cloneWorkspace('cloneSources', criteria = 'Any')
     }
@@ -163,11 +181,11 @@ job("manage-single-subnet-machine") {
             }
         }
         stringParam ('vmid', '', 'the vmid of the machine you want to put in specific state')
-    }      
-    
+    }
+
     steps {
         shell '''export VAULT_PASSWORD=${VAULT_PASSWORD}
-ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i inventory -vvv --extra-vars "@inventory/enforce_value_vars.yml" --extra-vars "host=localhostInternalSubnet proxmox_node=proxmoxNodeInternalPrivileges state=${vm_state} vmid=${vmid} force_variable_check=True"
+ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i ../inventory -vvv --extra-vars "@../inventory/enforce_value_vars.yml" --extra-vars "host=localhostInternalSubnet proxmox_node=proxmoxNodeInternalPrivileges state=${vm_state} vmid=${vmid} force_variable_check=True"
         '''
     }
 }
