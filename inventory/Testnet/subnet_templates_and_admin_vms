@@ -6,22 +6,22 @@ BaseTemplate
 [PerimeterRouterTemplate]
 perRouterTemplate
 [PerimeterRouterTemplate:vars]
-vmid=6014
-new_machine_name=perimeterRouterTemplateTestnet
+vmid=50029
+new_machine_name=perimeterRouterTemplateSascha
 template_vmid=10002
 
 [AnsibleJenkinsMachineTemplate]
 ansibleJenkinsTemplate
 [AnsibleJenkinsMachineTemplate:vars]
-vmid=6013
-new_machine_name=ansibleJenkinsTemplateTestnet
-template_vmid=10004
+vmid=50028
+new_machine_name=ansibleJenkinsTemplateSascha
+template_vmid=10000
 
 [BaseTemplate]
 baseTemplate
 [BaseTemplate:vars]
-vmid=6011
-new_machine_name=baseMachineTemplateTestnet
+vmid=50026
+new_machine_name=baseMachineTemplateSascha
 template_vmid=10005
 
 [AdminVMsGroup:children]
@@ -31,14 +31,14 @@ PerimeterRouterGroup
 [PerimeterRouterGroup]
 perRouter
 [PerimeterRouterGroup:vars]
-vmid=6000
-new_machine_name=testPerimeterTestNet1
-template_vmid=6014
+vmid=50021
+new_machine_name=perimeterSaschaNet
+template_vmid=50029
 
 [AnsibleJenkinsMachine]
 ansibleJenkinsVM
 [AnsibleJenkinsMachine:vars]
-vmid=6012
-host_static_ip=10.5.202.162
-new_machine_name=ansibleJenkinsMachineTestnet
-template_vmid=6013
+vmid=50027
+host_static_ip=10.5.202.118
+new_machine_name=ansibleJenkinsSascha
+template_vmid=50028

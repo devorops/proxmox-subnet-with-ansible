@@ -12,10 +12,13 @@
     node        : "{{ proxmox_node_name }}"
     vmid        : "{{ vmid }}"
     state       : "{{ state }}"
-    timeout     : 290
+    timeout     : 1290
     skiplock    :
     force       : "{{ force_stop }}"
   retries: 4
   delay: 15
-  ignore_errors: yes
+  #ignore_errors: yes
   when: ( force_variable_check == false or ( vmid | int <= toVmid | int and fromVmid | int - 1 <= vmid | int ))
+- name: Waiting a bit for the Hypervisor to catch up..
+  pause:
+    seconds: 10

@@ -25,6 +25,7 @@
 - name: Converting VM with VM-id "{{ vmid }}" to a template..
   shell: |
     pvesh create /nodes/{{ proxmox_node_name }}/qemu/{{ vmid }}/template
+    qm unlock {{ vmid }}
   when: (contents_would_have.changed == true and (results.stdout | from_json).status == "stopped")
 - name: Deleting the created machine with VM-id "{{ vmid }}" to a template..
   shell:

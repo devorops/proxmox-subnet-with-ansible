@@ -1,11 +1,11 @@
-sysname: DevopsTestRouter
+sysname: SaschaRouter
 initial_ip_address: 10.5.200.207
-external_ip_address: 10.5.200.213
+external_ip_address: 10.5.200.208
 external_subnetmask: 255.255.252.0
 default_gateway: 10.5.200.1
-internal_ip_address: 10.5.202.161
-dhcp_pool_name: DevopsTestNet
-dhcp_network: 10.5.202.160
+internal_ip_address: 10.5.202.113
+dhcp_pool_name: SaschaNet
+dhcp_network: 10.5.202.112
 dns_by_dhcp: 10.5.1.253
 username: hp 
 password: hp123

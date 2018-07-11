@@ -8,4 +8,4 @@
   failed_when: false
 - name: Waiting a bit for the Hypervisor to catch up..
   pause:
-    seconds: 6
+    seconds: 20

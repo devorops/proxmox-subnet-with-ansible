@@ -58,16 +58,16 @@ InternalUserVMsGroup
 [InternalUserVMsGroup]
 [UserVMsGroup]
 [UserVMsGroup:vars]
-full_clone=no
+full_clone=false
 
 [AdminVMsGroup]
 [AdminVMsGroup:vars]
-full_clone=no
+full_clone=false
 
 [LocalhostTemplatesGroup]
 [LocalhostTemplatesGroup:vars]
 api_host={{ proxmox_node_external_ip }}
-full_clone=yes
+full_clone=true
 keepTemplateAfterVMIsCreated=true
 [LocalhostTemplatesGroup:children]
 SubnetTemplatesGroup

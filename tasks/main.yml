@@ -1,9 +1,9 @@
 ---
 ## 1. Create User/Group/Role and assign privileges
-- hosts: proxmoxNodePrivileges
-  tasks:
-    - name:  Create User/Group/Role and assign privileges
-      import_tasks: create_subnet_user_and_set_privileges.yml
+#- hosts: proxmoxNodePrivileges
+#  tasks:
+#    - name:  Create User/Group/Role and assign privileges
+#      import_tasks: create_subnet_user_and_set_privileges.yml
 
 ## 2. Cloning admin-subnet VMs that will be converted to subnet-templates
 - hosts: "LocalhostTemplatesGroup"
@@ -26,7 +26,6 @@
 
 ## 5. Creating user defined machines from the provided inventory
 - hosts: "UserVMsGroup"
-  serial: 1
   tasks:
     - name: Creating user defined machines from the provided inventory
       import_tasks: create_vm_from_template.yml
