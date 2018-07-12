@@ -1,9 +1,9 @@
 ---
 ## 1. Create User/Group/Role and assign privileges
-#- hosts: proxmoxNodePrivileges
-#  tasks:
-#    - name:  Create User/Group/Role and assign privileges
-#      import_tasks: create_subnet_user_and_set_privileges.yml
+- hosts: proxmoxNodePrivileges
+  tasks:
+    - name:  Create User/Group/Role and assign privileges
+      import_tasks: create_subnet_user_and_set_privileges.yml
 
 ## 2. Cloning admin-subnet VMs that will be converted to subnet-templates
 - hosts: "LocalhostTemplatesGroup"
@@ -104,9 +104,6 @@
         name_set: jenkinsVMM
         ansible_user_set: root
         ansible_host_set: "{{ hostvars['ansibleJenkinsVM']['host_static_ip'] }}"
-    - name: Pause
-      pause:
-
 
 ## 15. setting up jenkins VM
 - import_playbook: set_up_jenkins.yml

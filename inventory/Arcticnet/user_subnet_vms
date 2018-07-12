@@ -1,0 +1,11 @@
+[UserVMsGroup:children]
+ArcticVM1
+
+[ArcticVM1]
+arcVM1
+[ArcticVM1:vars]
+vmid=50021
+new_machine_name=ArcticVM1
+template_vmid=50026
+host_static_ip=10.5.202.114
+full_clone=false

@@ -3,51 +3,10 @@
     - name: Clean inventory path
       file:
         state: absent
-        path: "/var/lib/jenkins/infrastructure-github/inventory/"
+        path: "/var/lib/jenkins/workspace/inventory/"
     - name: TODO
       copy:
         src: "{{ inventory_dir }}/"
-        dest: /var/lib/jenkins/infrastructure-github/inventory/
+        dest: /var/lib/jenkins/workspace/inventory/
         owner: jenkins
         group: jenkins
-        mode: 0777
-    - file:
-        path: /var/lib/jenkins/infrastructure-github/inventory/main
-        owner: jenkins
-        group: jenkins
-        mode: 0644
-    - file:
-        path: /var/lib/jenkins/infrastructure-github/inventory/subnet_templates_and_admin_vms
-        owner: jenkins
-        group: jenkins
-        mode: 0644
-    - file:
-        path: /var/lib/jenkins/infrastructure-github/inventory/enforce_value_vars.yml
-        owner: jenkins
-        group: jenkins
-        mode: 0644
-    - file:
-        path: /var/lib/jenkins/infrastructure-github/inventory/user_subnet_vms
-        owner: jenkins
-        group: jenkins
-        mode: 0666
-    - file:
-        path: /var/lib/jenkins/infrastructure-github/inventory
-        owner: jenkins
-        group: jenkins
-        mode: 0777
-    - file:
-        path: /var/lib/jenkins/infrastructure-github/inventory/group_vars
-        owner: jenkins
-        group: jenkins
-        mode: 0777
-    - file:
-        path: /var/lib/jenkins/infrastructure-github/inventory/group_vars/PerimeterRouterGroup.yml
-        owner: jenkins
-        group: jenkins
-        mode: 0644
-    - file:
-        path: /var/lib/jenkins/infrastructure-github/inventory/group_vars/PrivilegesGroup.yml
-        owner: jenkins
-        group: jenkins
-        mode: 0644
