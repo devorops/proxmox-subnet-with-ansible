@@ -4,10 +4,10 @@
     - name: Clean inventory path
       file:
         state: absent
-        path: "/var/lib/jenkins/workspace/inventory/"
-        #- name: TODO
-        # copy:
-        # src: "{{ inventory_dir }}/"
-        #  dest: /var/lib/jenkins/workspace/inventory/
-        #  owner: jenkins
-        # group: jenkins
+        path: "/var/lib/jenkins/workspace/inventory/*"
+    - name: TODO
+      copy:
+        src: "{{ inventory_dir }}/"
+        dest: /var/lib/jenkins/workspace/inventory/
+        owner: jenkins
+        group: jenkins
