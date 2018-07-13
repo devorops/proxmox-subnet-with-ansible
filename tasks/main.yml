@@ -108,6 +108,11 @@
 ## 15. setting up jenkins VM
 - import_playbook: set_up_jenkins.yml
  
+## 16. Add route from to subnet ansible machine..
+- hosts: proxmoxInternalRouter
+  tasks:
+    - name: Adding route to subnet ansible machine..
+      import_tasks: add_route_to_subnet_ansible_jenkins.yml
 
 
 
@@ -121,12 +126,10 @@
 
 
 
-
-
-## (optional) 16. Store details/logs in Database/File:
+## (optional) 17. Store details/logs in Database/File:
 #
 
-## (optional) 17. Send email with all details to customer
+## (optional) 18. Send email with all details to customer
 # Necessary vars: email, name
 #
 

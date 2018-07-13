@@ -10,3 +10,7 @@
         dest: /var/lib/jenkins/workspace/inventory/
         owner: jenkins
         group: jenkins
+    - name: Add route to proxmox node
+      command:
+        ip route add {{ proxmox_node_internal_ip }} via {{ internal_ip_address }}
+      failed_when: false

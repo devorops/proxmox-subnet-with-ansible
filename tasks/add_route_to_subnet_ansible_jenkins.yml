@@ -1,0 +1,4 @@
+- name: Adding route to subnet ansible machine..
+  command:
+    ip route add {{ hostvars['ansibleJenkinsVM']['host_static_ip'] }} via {{ external_ip_address }}
+  failed_when: false
