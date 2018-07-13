@@ -26,9 +26,9 @@ template_vmid=10005
 
 [AdminVMsGroup:children]
 AnsibleJenkinsMachine
-PerimeterRouterGroup
+PerimerRouterLocal
 
-[PerimeterRouterGroup]
+[PerimerRouterLocal]
 perRouter
 [PerimeterRouterGroup:vars]
 vmid=50020

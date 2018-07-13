@@ -114,12 +114,16 @@ ansible_host={{ proxmox_node_internal_ip }}
 ansible_user=root
 
 [ProxmoxNode-InternalSubnetGroup:children]
-ProxmoxInternalPrivileges
-[PrivilegesGroup:children]
-ProxmoxInternalPrivileges
+ProxmoxInternalRouter
 
-[ProxmoxInternalPrivileges]
-proxmoxNodeInternalPrivileges
+[PerimeterRouterGroup]
+[PerimeterRouterGroup:children]
+ProxmoxInternalRouter
+PerimerRouterLocal
+
+[PerimerRouterLocal]
+[ProxmoxInternalRouter]
+proxmoxNodeInternalRouter
 
 #----------------------------------------------------------------------------------------
 

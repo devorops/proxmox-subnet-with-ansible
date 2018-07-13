@@ -104,22 +104,28 @@
         name_set: jenkinsVMM
         ansible_user_set: root
         ansible_host_set: "{{ hostvars['ansibleJenkinsVM']['host_static_ip'] }}"
+        groups_list: ProxmoxInternalRouter
 
 ## 15. setting up jenkins VM
 - import_playbook: set_up_jenkins.yml
- 
-## 16. Add route from to subnet ansible machine..
-- hosts: proxmoxInternalRouter
+
+## 16. Add route
+- hosts: jenkinsVMM
   tasks:
-    - name: Adding route to subnet ansible machine..
-      import_tasks: add_route_to_subnet_ansible_jenkins.yml
+    - name: Add route
+      import_tasks: add_single_host_to_single_host_route.yml
+      vars:
+        from_host: "{{ proxmox_node_internal_ip }}"
+        via_hop_host: "{{ internal_ip_address }}"
 
-
-
-
-
-
-
+## 17. Add route
+- hosts: proxmoxNodeInternalRouter
+  tasks:
+    - name: Add route
+      import_tasks: add_single_host_to_single_host_route.yml
+      vars:
+        from_host: "{{ hostvars['ansibleJenkinsVM']['host_static_ip'] }}"
+        via_hop_host: "{{ external_ip_address }}"
 
 
 

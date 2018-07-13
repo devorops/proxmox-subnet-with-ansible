@@ -3,7 +3,7 @@ userId: arctic
 groupId: ArcticUsers
 roleId: PVE_Arctic_Role
 storage: QNAP-Storage
-vmidList: '[1000]'
+vmidList: '[6017]'
 privilegesList: "Datastore.Allocate Datastore.AllocateSpace
 Datastore.AllocateTemplate Datastore.Audit Group.Allocate
 Permissions.Modify Pool.Allocate Realm.Allocate Realm.AllocateUser
@@ -12,6 +12,6 @@ VM.Clone VM.Config.CDROM VM.Config.CPU VM.Config.Disk
 VM.Config.HWType VM.Config.Memory VM.Config.Options
 VM.Console VM.Monitor VM.PowerMgmt VM.Snapshot"
 vmidRangeWillBeUsed: True
-vmidListWillBeUsed: False
+vmidListWillBeUsed: True
 groupWillBeCreated: True
 roleWillBeCreated: True
