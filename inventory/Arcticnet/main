@@ -31,7 +31,6 @@ force_stop=False
 #---------------------------------------------------------------------------------------------
 
 [LocalhostGroup:vars]
-ansible_connection=local
 api_host={{ proxmox_node_external_ip }}
 
 [LocalhostGroup:children]
@@ -69,6 +68,7 @@ full_clone=no
 api_host={{ proxmox_node_external_ip }}
 full_clone=yes
 keepTemplateAfterVMIsCreated=true
+ansible_connection=local
 [LocalhostTemplatesGroup:children]
 SubnetTemplatesGroup
 
@@ -88,7 +88,7 @@ ProxmoxTemplatesGroup
 proxmoxNode
 
 [ProxmoxPrivilegesGroup]
-proxmoxNodePrivileges
+proxmoxNodePrivilegesExternal
 [PrivilegesGroup:children]
 ProxmoxPrivilegesGroup
 

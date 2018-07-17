@@ -16,8 +16,8 @@ job("full-recreate-subnet") {
     }
 
     wrappers {
-    	credentialsBinding {
-     	    string('VAULT_PASSWORD', 'VAULT_PASSWORD')
+        credentialsBinding {
+            string('VAULT_PASSWORD', 'VAULT_PASSWORD')
         }
     }
 
@@ -25,11 +25,42 @@ job("full-recreate-subnet") {
         cloneWorkspace("cloneSources", "Any")
     }
 
-    steps {
-        shell '''export VAULT_PASSWORD=${VAULT_PASSWORD} 
-ansible-playbook tasks/generate_current_subnet_state_inventory.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "state=current force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml" ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i inventory --extra-vars "state=stopped host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@inventory/enforce_value_vars.yml"
-ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "state=absent  host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
-ansible-playbook tasks/recreate_subnet_vms.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
+    steps { shell '''export VAULT_PASSWORD=${VAULT_PASSWORD} 
+
+ansible-playbook tasks/generate_current_subnet_state_inventory.yml \
+--vault-password-file ./vault_pass.py -i ../inventory \
+--extra-vars "state=current" \
+--extra-vars "@../inventory/enforce_value_vars.yml" 
+
+ansible-playbook tasks/put_vm_in_state.yml \
+--vault-password-file ./vault_pass.py -i ../inventory \
+--extra-vars "state=stopped \
+              host=CurrentSubnetHosts" \
+--extra-vars "@../inventory/enforce_value_vars.yml"
+
+ansible-playbook tasks/put_vm_in_state.yml \
+--vault-password-file ./vault_pass.py -i ../inventory \
+--extra-vars "state=absent \
+              host=CurrentSubnetHosts" \
+--extra-vars "@../inventory/enforce_value_vars.yml"
+
+ansible-playbook tasks/create_subnet_user_and_set_privileges.yml \
+--vault-password-file ./vault_pass.py -i ../inventory \
+--extra-vars "visibilityToSubnet=Internal" \
+--extra-vars "@../inventory/enforce_value_vars.yml" \
+--tags "privileges"
+
+ansible-playbook tasks/create_vm_from_template.yml \
+--vault-password-file ./vault_pass.py -i ../inventory \
+--extra-vars "host=InternalUserVMsGroup \
+              proxmox_node=CurrentSubnetHosts \
+              force_variable_check=True" \
+--extra-vars "@../inventory/enforce_value_vars.yml"
+#TODO: FIX THE ABOVE!!!!!
+
+ansible-playbook tasks/recreate_router.yml \
+--vault-password-file ./vault_pass.py -i ../inventory \
+--extra-vars "@../inventory/enforce_value_vars.yml"
         '''
     }
 }
@@ -101,8 +132,8 @@ job("manage-all-subnet-machines") {
     }
 
     wrappers {
-    	credentialsBinding {
-     	    string('VAULT_PASSWORD', 'VAULT_PASSWORD')
+        credentialsBinding {
+            string('VAULT_PASSWORD', 'VAULT_PASSWORD')
         }
     }
 
@@ -133,10 +164,25 @@ job("manage-all-subnet-machines") {
 
     steps {
         shell '''export VAULT_PASSWORD=${VAULT_PASSWORD}
-ansible-playbook tasks/generate_current_subnet_state_inventory.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "state=current force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
-ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "state=stopped host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
-ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "state=absent  host=CurrentSubnetHostsLocalhost proxmox_node=CurrentSubnetHosts force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
-ansible-playbook tasks/recreate_subnet_vms.yml --vault-password-file ./vault_pass.py -i ../inventory --extra-vars "force_variable_check=True" --extra-vars "@../inventory/enforce_value_vars.yml"
+
+ansible-playbook tasks/generate_current_subnet_state_inventory.yml \
+--vault-password-file ./vault_pass.py -i ../inventory \
+--extra-vars "state=current" \
+--extra-vars "@../inventory/enforce_value_vars.yml"
+
+ansible-playbook tasks/put_vm_in_state.yml \
+--vault-password-file ./vault_pass.py -i ../inventory \
+--extra-vars "state=stopped \
+              host=CurrentSubnetHosts" \
+--extra-vars "@../inventory/enforce_value_vars.yml"
+
+#TODO: Add check
+
+ansible-playbook tasks/create_subnet_user_and_set_privileges.yml \
+--vault-password-file ./vault_pass.py -i ../inventory \
+--extra-vars "visibilityToSubnet=Internal" \
+--extra-vars "@../inventory/enforce_value_vars.yml" \
+--tags "privileges"
         '''
     }
 }
@@ -164,11 +210,11 @@ job("manage-single-subnet-machine") {
     }
 
     wrappers {
-    	credentialsBinding {
-     	    string('VAULT_PASSWORD', 'VAULT_PASSWORD')
+        credentialsBinding {
+            string('VAULT_PASSWORD', 'VAULT_PASSWORD')
         }
     }
-  
+
     scm {
         cloneWorkspace('cloneSources', criteria = 'Any')
     }
@@ -185,7 +231,23 @@ job("manage-single-subnet-machine") {
 
     steps {
         shell '''export VAULT_PASSWORD=${VAULT_PASSWORD}
-ansible-playbook tasks/manage_subnet_machines.yml --vault-password-file ./vault_pass.py -i ../inventory -vvv --extra-vars "@../inventory/enforce_value_vars.yml" --extra-vars "host=localhostInternalSubnet proxmox_node=proxmoxNodeInternalPrivileges state=${vm_state} vmid=${vmid} force_variable_check=True"
+
+ansible-playbook tasks/put_vm_in_state.yml \
+--vault-password-file ./vault_pass.py -i ../inventory \
+--extra-vars "host=localhostInternalSubnet \
+              state=${vm_state} \
+              vmid=${vmid} \
+              force_variable_check=True" \
+--extra-vars "@../inventory/enforce_value_vars.yml"
+
+
+#TODO: Add check
+
+ansible-playbook tasks/create_subnet_user_and_set_privileges.yml \
+--vault-password-file ./vault_pass.py -i ../inventory \
+--extra-vars "visibilityToSubnet=Internal" \
+--extra-vars "@../inventory/enforce_value_vars.yml" \
+--tags "privileges"
         '''
     }
 }

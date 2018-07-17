@@ -1,0 +1,31 @@
+## 1. Generate cfg file for the perimeter router
+- hosts: perRouter
+  tasks:
+    - name: Generate cfg file for the perimeter router
+      import_tasks: prepare_hp_config_file.yml
+
+## 2. Generate static ip-mac entries in the perimeter DHCP router
+- import_playbook: generate_dhcp_entries.yml
+
+## 3. Stopping Perimeter Router
+- import_playbook: put_vm_in_state.yml host=perRouter state=stopped
+
+## 4. Starting Perimeter Router
+- import_playbook: put_vm_in_state.yml host=perRouter state=started
+
+## 5. Waiting for Perimeter-router to become available
+- hosts: perRouter
+  tasks:
+    - name: Waiting for Perimeter-router to become available..
+      import_tasks: wait_for_machine_port_to_become_available.yml
+      vars:
+        port_to_wait_for: 22
+        ip_address: "{{ hostvars['perRouter']['initial_ip_address'] }}"
+
+## 6. Applying the generated configuration to perimeter router
+- hosts: perRouter
+  tasks:
+    - name:
+      import_tasks: hp_install_config.yml
+      vars:
+        ip_address: "{{ hostvars['perRouter']['initial_ip_address'] }}"

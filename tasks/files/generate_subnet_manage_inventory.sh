@@ -82,20 +82,14 @@ for NODE in $(echo $NODES); do
         count=$((count+1))
         echo "[CurrentSubnetHosts]"             >> $INVENTORY_DIR/generatedHostsFile
 	echo "subnetHost$count vmid=$VMID"      >> $INVENTORY_DIR/generatedHostsFile
-        echo "[CurrentSubnetHostsLocalhost]"    >> $INVENTORY_DIR/generatedHostsFile
-        echo "subnetHostLocal$count vmid=$VMID" >> $INVENTORY_DIR/generatedHostsFile
       fi
     done
 done
 
 echo "[CurrentSubnetHosts]"               >> $INVENTORY_DIR/generatedHostsFile
-echo "[CurrentSubnetHostsLocalhost]"      >> $INVENTORY_DIR/generatedHostsFile
+
 echo "[CurrentSubnetHosts:vars]"          >> $INVENTORY_DIR/generatedHostsFile
-echo "state=$IN_STATE"                    >> $INVENTORY_DIR/generatedHostsFile
-echo "ansible_host=$SERVER"               >> $INVENTORY_DIR/generatedHostsFile
-echo "ansible_user=root"                  >> $INVENTORY_DIR/generatedHostsFile
-echo "[CurrentSubnetHostsLocalhost:vars]" >> $INVENTORY_DIR/generatedHostsFile
-echo "state=$IN_STATE"                    >> $INVENTORY_DIR/generatedHostsFile
 echo "ansible_connection=local"           >> $INVENTORY_DIR/generatedHostsFile
+
 echo "[PrivilegesGroup:children]"         >> $INVENTORY_DIR/generatedHostsFile
 echo "CurrentSubnetHosts"                 >> $INVENTORY_DIR/generatedHostsFile

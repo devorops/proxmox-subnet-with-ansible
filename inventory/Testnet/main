@@ -58,16 +58,16 @@ InternalUserVMsGroup
 [InternalUserVMsGroup]
 [UserVMsGroup]
 [UserVMsGroup:vars]
-full_clone=false
+full_clone=no
 
 [AdminVMsGroup]
 [AdminVMsGroup:vars]
-full_clone=false
+full_clone=no
 
 [LocalhostTemplatesGroup]
 [LocalhostTemplatesGroup:vars]
 api_host={{ proxmox_node_external_ip }}
-full_clone=true
+full_clone=yes
 keepTemplateAfterVMIsCreated=true
 [LocalhostTemplatesGroup:children]
 SubnetTemplatesGroup
@@ -88,7 +88,7 @@ ProxmoxTemplatesGroup
 proxmoxNode
 
 [ProxmoxPrivilegesGroup]
-proxmoxNodePrivileges
+proxmoxNodePrivilegesExternal
 [PrivilegesGroup:children]
 ProxmoxPrivilegesGroup
 
@@ -114,12 +114,16 @@ ansible_host={{ proxmox_node_internal_ip }}
 ansible_user=root
 
 [ProxmoxNode-InternalSubnetGroup:children]
-ProxmoxInternalPrivileges
-[PrivilegesGroup:children]
-ProxmoxInternalPrivileges
+ProxmoxInternalRouter
 
-[ProxmoxInternalPrivileges]
-proxmoxNodeInternalPrivileges
+[PerimeterRouterGroup]
+[PerimeterRouterGroup:children]
+ProxmoxInternalRouter
+PerimerRouterLocal
+
+[PerimerRouterLocal]
+[ProxmoxInternalRouter]
+proxmoxNodeInternalRouter
 
 #----------------------------------------------------------------------------------------
 

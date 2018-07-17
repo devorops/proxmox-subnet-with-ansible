@@ -1,11 +1,17 @@
-password: sascha123
-userId: sascha
+password: test123
+userId: test
 groupId: Test-Users
-roleId: Administrator
+roleId: PVE_Test_Role
 storage: QNAP-Storage
-vmidList: '[1000]'
-privilegesList: ""
+vmidList: '[]'
+privilegesList: "Datastore.Allocate Datastore.AllocateSpace
+Datastore.AllocateTemplate Datastore.Audit Group.Allocate
+Permissions.Modify Pool.Allocate Realm.Allocate Realm.AllocateUser
+Sys.Audit Sys.Syslog User.Modify VM.Allocate VM.Audit VM.Backup
+VM.Clone VM.Config.CDROM VM.Config.CPU VM.Config.Disk
+VM.Config.HWType VM.Config.Memory VM.Config.Options
+VM.Console VM.Monitor VM.PowerMgmt VM.Snapshot"
 vmidRangeWillBeUsed: True
 vmidListWillBeUsed: False
-groupWillBeCreated: False
-roleWillBeCreated: False
+groupWillBeCreated: True
+roleWillBeCreated: True
