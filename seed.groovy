@@ -103,7 +103,7 @@ activeChestFlowerViolenceVM
 vmid=6004
 new_machine_name=VM1
 template_vmid=6011
-ansible_host=10.5.202.19
+ansible_host=10.5.202.164
 full_clone=no
 
 [StupidRejoiceClassDressVM]
@@ -112,7 +112,7 @@ stupidRejoiceClassDressVM
 vmid=6005
 new_machine_name=VM6
 template_vmid=6011
-ansible_host=10.5.202.20
+ansible_host=10.5.202.165
 full_clone=no"
 
 # "-------------------------Please put/copy your inventory definition above------------------------------"

@@ -15,7 +15,7 @@ ansibleJenkinsTemplate
 [AnsibleJenkinsMachineTemplate:vars]
 vmid=6013
 new_machine_name=ansibleJenkinsTemplateTestnet
-template_vmid=10000
+template_vmid=10001
 
 [BaseTemplate]
 baseTemplate
