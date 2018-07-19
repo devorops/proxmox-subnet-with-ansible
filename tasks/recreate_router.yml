@@ -5,7 +5,7 @@
       import_tasks: prepare_hp_config_file.yml
 
 ## 2. Generate static ip-mac entries in the perimeter DHCP router
-- import_playbook: generate_dhcp_entries.yml
+- import_playbook: generate_dhcp_entries.yml host=localhostInternalSubnet
 
 ## 3. Stopping Perimeter Router
 - import_playbook: put_vm_in_state.yml host=perRouter state=stopped

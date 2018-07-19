@@ -1,5 +1,5 @@
 ---
-- hosts: localhost
+- hosts: "{{ host }}"
   tasks:
     - name: include vault variables(proxmox cluster password)
       include_vars: '../vars/vault.yml'
