@@ -10,22 +10,28 @@
 ## 3. Stopping Perimeter Router
 - import_playbook: put_vm_in_state.yml host=perRouter state=stopped
 
-## 4. Starting Perimeter Router
+## 4. Deleting Perimeter Router
+- import_playbook: put_vm_in_state.yml host=perRouter state=absent
+
+## 5. Create subnet Admin VMs from the templates created in previos step
+- import_playbook: create_vm_from_template.yml host=AdminVMsGroup
+
+## 6. Starting Perimeter Router
 - import_playbook: put_vm_in_state.yml host=perRouter state=started
 
-## 5. Waiting for Perimeter-router to become available
+## 7. Waiting for Perimeter-router to become available
 - hosts: perRouter
   tasks:
     - name: Waiting for Perimeter-router to become available..
       import_tasks: wait_for_machine_port_to_become_available.yml
       vars:
         port_to_wait_for: 22
-        ip_address: "{{ hostvars['perRouter']['initial_ip_address'] }}"
+        ip_address: "{{ hostvars['perRouter']['internal_ip_address'] }}"
 
-## 6. Applying the generated configuration to perimeter router
+## 8. Applying the generated configuration to perimeter router
 - hosts: perRouter
   tasks:
     - name:
       import_tasks: hp_install_config.yml
       vars:
-        ip_address: "{{ hostvars['perRouter']['initial_ip_address'] }}"
+        ip_address: "{{ hostvars['perRouter']['internal_ip_address'] }}"

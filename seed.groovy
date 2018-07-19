@@ -51,12 +51,12 @@ ansible-playbook tasks/create_subnet_user_and_set_privileges.yml \\
 --tags "privileges"
 
 ansible-playbook tasks/create_vm_from_template.yml \\
---vault-password-file ./vault_pass.py -i ../inventory \\
+--vault-password-file ./vault_pass.py \\
+-i ../inventory \\
+-i /var/lib/jenkins/custom-user-inventory/user_subnet_vms \\
 --extra-vars "host=InternalUserVMsGroup \\
-              proxmox_node=CurrentSubnetHosts \\
               force_variable_check=True" \\
 --extra-vars "@../inventory/enforce_value_vars.yml"
-#TODO: FIX THE ABOVE!!!!!
 
 ansible-playbook tasks/recreate_router.yml \\
 --vault-password-file ./vault_pass.py -i ../inventory \\

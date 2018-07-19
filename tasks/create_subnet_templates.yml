@@ -1,6 +1,3 @@
-- name: include variables
-  include_vars: '{{ inventory_dir }}/enforce_value_vars.yml'
-  no_log: true
 - name: Checking if VM-id "{{ vmid }}" is a template or regular virtual machine..
   lineinfile:
     path: /etc/pve/nodes/{{ proxmox_node_name }}/qemu-server/{{ vmid }}.conf

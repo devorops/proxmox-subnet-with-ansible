@@ -1,8 +1,5 @@
 - hosts: "{{ host }}"
   tasks:
-    - name: include variables
-      include_vars: '{{ inventory_dir }}/enforce_value_vars.yml'
-      no_log: true
     - name: include vault variables(proxmox cluster password)
       include_vars: '../vars/vault.yml'
       no_log: true
