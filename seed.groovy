@@ -58,7 +58,7 @@ ansible-playbook tasks/create_vm_from_template.yml \\
               force_variable_check=True" \\
 --extra-vars "@../inventory/enforce_value_vars.yml"
 
-ansible-playbook tasks/recreate_router.yml \\
+ansible-playbook tasks/re_generate_and_re_apply_router_config.yml \\
 --vault-password-file ./vault_pass.py -i ../inventory \\
 --extra-vars "@../inventory/enforce_value_vars.yml"
         '''
@@ -118,6 +118,52 @@ full_clone=no"
 # "-------------------------Please put/copy your inventory definition above------------------------------"
 echo "$INVENTORY_VALUE" > /var/lib/jenkins/custom-user-inventory/user_subnet_vms
 '''
+    }
+
+    triggers {
+        upstream('full-recreate-subnet', 'SUCCESS')
+    }
+}
+
+job("cron-recreate-privileges") {
+    authorization {
+        permissions('admin', [
+            'hudson.model.Item.Build',
+            'hudson.model.Item.Cancel',
+            'hudson.model.Item.Configure',
+            'hudson.model.Item.Delete',
+            'hudson.model.Item.Discover',
+            'hudson.model.Item.Read',
+            'hudson.model.Item.Workspace',
+            'hudson.model.Run.Delete',
+            'hudson.model.Run.Update',
+            'hudson.scm.SCM.Tag'
+        ])
+
+    }
+
+    wrappers {
+        credentialsBinding {
+            string('VAULT_PASSWORD', 'VAULT_PASSWORD')
+        }
+    }
+
+    scm {
+        cloneWorkspace("cloneSources", "Any")
+    }
+
+    steps { 
+        shell '''export VAULT_PASSWORD=${VAULT_PASSWORD}
+
+ansible-playbook tasks/create_subnet_user_and_set_privileges.yml \\
+--vault-password-file ./vault_pass.py -i ../inventory \\
+--extra-vars "visibilityToSubnet=Internal" \\
+--extra-vars "@../inventory/enforce_value_vars.yml" \\
+--tags "privileges"'''
+        }
+    
+    triggers {
+        cron("H/15 * * * *")
     }
 }
 

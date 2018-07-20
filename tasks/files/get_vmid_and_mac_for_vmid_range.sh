@@ -117,6 +117,7 @@ TO_VMID=6006
 SUBNET_NAME="Testnet"
 SUBNET_MASK=255.255.255.240
 INVENTORY_DIR="some-path/inventory/Testnet/"
+IS_THIS_JENKINS_MACHINE=false
 
 while [[ $# > 0 ]]; do
   key="$1"
@@ -161,18 +162,23 @@ while [[ $# > 0 ]]; do
       shift
     ;;
 
+    -j)
+       IS_THIS_JENKINS_MACHINE=$2
+       shift	    
+    ;;
 
     -h|--help|-?)
       echo "Usage:"
       echo "$0 [options]"
-      echo " -u <username>     Username, default $USERNAME"
-      echo " -p <password>     Password, default $PASSWORD"
-      echo " -s <server>       Server to connect to, default $SERVER"
-      echo " -f <fromVmid>     First available subnet vmid number, default $FROM_VMID"
-      echo " -t <toVmid>       Last available subnet vmid number, default $TO_VMID"
-      echo " -m <subnetMask>   Internal subnet-mask, default $SUBNET_MASK"
-      echo " -i <inventoryDir> The main inventory directory passed, default $INVENTORY_DIR"
-      echo " -d <playbookDir>  The main  directory passed, default $PLAYBOOK_DIR"      
+      echo " -u <username>       Username, default $USERNAME"
+      echo " -p <password>       Password, default $PASSWORD"
+      echo " -s <server>         Server to connect to, default $SERVER"
+      echo " -f <fromVmid>       First available subnet vmid number, default $FROM_VMID"
+      echo " -t <toVmid>         Last available subnet vmid number, default $TO_VMID"
+      echo " -m <subnetMask>     Internal subnet-mask, default $SUBNET_MASK"
+      echo " -i <inventoryDir>   The main inventory directory passed, default $INVENTORY_DIR"
+      echo " -d <playbookDir>    The main  directory passed, default $PLAYBOOK_DIR"      
+      echo " -j <jenkinsMachine> Defines if this is a jenkins-ansible control machine within subnet, default $IS_THIS_JENKINS_MACHINE"
 
       exit 0
     ;;
@@ -188,7 +194,6 @@ while [[ $# > 0 ]]; do
   shift # past argument or value
 done
 
-#echo "PATH_TO_USER_INVENTORY_FILE:"$PATH_TO_USER_INVENTORY_FILE
 
 RESPONSE=$(curl -s -k -d "username=$USERNAME&password=$PASSWORD" https://$SERVER:8006/api2/json/access/ticket)
 TOKEN=$(echo $RESPONSE | jq -r .data.ticket)
@@ -204,6 +209,11 @@ for NODE in $(echo $NODES); do
       HWADDR=$(echo $NET | sed -re "s/[a-zA-Z0-9]+=([a-zA-Z0-9:]+),.*/\1/g")
       #echo $VMID
       #echo "MAC:$HWADDR"
+      if [ "$IS_THIS_JENKINS_MACHINE" = true ] ; then
+	IP=$(parse_inventory_and_get_ip_by_given_vmid -v $VMID -f /var/lib/jenkins/custom-user-inventory/user_subnet_vms)
+      else
+	IP=$(parse_inventory_and_get_ip_by_given_vmid -v $VMID -f $INVENTORY_DIR/user_subnet_vms)
+      fi
       IP=$(parse_inventory_and_get_ip_by_given_vmid -v $VMID -f $INVENTORY_DIR/user_subnet_vms)
       if [[ "$IP" = "" ]]; then
         IP=$(parse_inventory_and_get_ip_by_given_vmid -v $VMID -f $INVENTORY_DIR/subnet_templates_and_admin_vms)

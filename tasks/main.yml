@@ -3,7 +3,7 @@
 - import_playbook: create_subnet_user_and_set_privileges.yml visibilityToSubnet=External
 
 ## 2. Cloning admin-subnet VMs that will be converted to subnet-templates
-- import_playbook: create_vm_from_template.yml host=LocalhostTemplatesGroup connection=local 
+- import_playbook: create_vm_from_template.yml host=LocalhostTemplatesGroup ansible_connection=local 
 
 ## 3. Creating the necessary subnet templates 
 - hosts: "ProxmoxTemplatesGroup"
@@ -24,7 +24,7 @@
       import_tasks: prepare_hp_config_file.yml
 
 ## 7. Generate static ip-mac entries in the perimeter DHCP router
-- import_playbook: generate_dhcp_entries.yml host=localhost
+- import_playbook: generate_dhcp_entries.yml host=localhost is_this_jenkins_machine=false
 
 ## 8. Starting Perimeter Router
 - import_playbook: put_vm_in_state.yml host=perRouter state=started

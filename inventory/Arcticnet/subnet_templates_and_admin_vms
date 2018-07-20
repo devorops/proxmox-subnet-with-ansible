@@ -15,7 +15,7 @@ ansibleJenkinsTemplate
 [AnsibleJenkinsMachineTemplate:vars]
 vmid=50028
 new_machine_name=ansibleJenkinsTemplateArctic
-template_vmid=10001
+template_vmid=10004
 
 [BaseTemplate]
 baseTemplate
