@@ -209,12 +209,13 @@ for NODE in $(echo $NODES); do
       HWADDR=$(echo $NET | sed -re "s/[a-zA-Z0-9]+=([a-zA-Z0-9:]+),.*/\1/g")
       #echo $VMID
       #echo "MAC:$HWADDR"
+     
       if [ "$IS_THIS_JENKINS_MACHINE" = true ] ; then
 	IP=$(parse_inventory_and_get_ip_by_given_vmid -v $VMID -f /var/lib/jenkins/custom-user-inventory/user_subnet_vms)
       else
 	IP=$(parse_inventory_and_get_ip_by_given_vmid -v $VMID -f $INVENTORY_DIR/user_subnet_vms)
       fi
-      IP=$(parse_inventory_and_get_ip_by_given_vmid -v $VMID -f $INVENTORY_DIR/user_subnet_vms)
+
       if [[ "$IP" = "" ]]; then
         IP=$(parse_inventory_and_get_ip_by_given_vmid -v $VMID -f $INVENTORY_DIR/subnet_templates_and_admin_vms)
       fi
