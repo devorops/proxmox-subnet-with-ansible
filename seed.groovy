@@ -120,8 +120,8 @@ echo "$INVENTORY_VALUE" > /var/lib/jenkins/custom-user-inventory/user_subnet_vms
 '''
     }
 
-    triggers {
-        upstream('full-recreate-subnet', 'SUCCESS')
+    publishers {
+        downstream('full-recreate-subnet', 'SUCCESS')
     }
 }
 
@@ -164,6 +164,10 @@ ansible-playbook tasks/create_subnet_user_and_set_privileges.yml \\
     
     triggers {
         cron("H/15 * * * *")
+    }
+
+    logRotator {
+        numToKeep(1)
     }
 }
 
