@@ -83,7 +83,8 @@ job("guest-build-inventory") {
         permissions('anonymous', [
             'hudson.model.Item.Build',
             'hudson.model.Item.Cancel',
-            'hudson.model.Item.Read'
+            'hudson.model.Item.Read',
+            'hudson.model.Item.Configure'
         ])
     }
 
@@ -103,7 +104,7 @@ activeChestFlowerViolenceVM
 vmid=6004
 new_machine_name=VM1
 template_vmid=6011
-ansible_host=10.5.202.164
+host_static_ip=10.5.202.164
 full_clone=no
 
 [StupidRejoiceClassDressVM]
@@ -112,7 +113,7 @@ stupidRejoiceClassDressVM
 vmid=6005
 new_machine_name=VM6
 template_vmid=6011
-ansible_host=10.5.202.165
+host_static_ip=10.5.202.165
 full_clone=no"
 
 # "-------------------------Please put/copy your inventory definition above------------------------------"
