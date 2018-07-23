@@ -38,11 +38,6 @@ while [[ $# > 0 ]]; do
       shift
     ;;
 
-    -i)
-      IN_STATE=$2
-      shift
-    ;;
-
     -d)
       INVENTORY_DIR=$2
       shift
@@ -56,7 +51,6 @@ while [[ $# > 0 ]]; do
       echo " -p <password>      Password, default $PASSWORD"
       echo " -f <fromVmid>      From VMID, default $FROM_VMID"
       echo " -t <toVmid>        To VMID, default $TO_VMID"
-      echo " -i <inState>       Set VM-range in state, default $IN_STATE"
       echo " -d <inventoryDir>  Default to $INVENTORY_DIR"
       exit 0
     ;;
@@ -73,15 +67,18 @@ RESPONSE=$(curl -s -k -d "username=$USERNAME&password=$PASSWORD" https://$SERVER
 TOKEN=$(echo $RESPONSE | jq -r .data.ticket)
 CSRF_PRESERVATION_TOKEN=$(echo $RESPONSE | jq -r .data.CSRFPreventionToken)
 NODES=$(curl -s -k https://$SERVER:8006/api2/json/nodes -b "PVEAuthCookie=$TOKEN" | jq -r .data[].node)
-
 count=0
+
 for NODE in $(echo $NODES); do
     curl -s -k https://$SERVER:8006/api2/json/nodes/$NODE/qemu -b "PVEAuthCookie=$TOKEN" > /tmp/proxvm-qemu.json
     for VMID in $(cat /tmp/proxvm-qemu.json | jq -r .data[].vmid); do
       if [ $VMID -le $TO_VMID ] && [ $VMID -ge $FROM_VMID ]; then
-        count=$((count+1))
-        echo "[CurrentSubnetHosts]"             >> $INVENTORY_DIR/generatedHostsFile
-	echo "subnetHost$count vmid=$VMID"      >> $INVENTORY_DIR/generatedHostsFile
+        TEMPLATE_PROPERTY=$(curl -s -k https://$SERVER:8006/api2/json/nodes/$NODE/qemu/$VMID/config -b "PVEAuthCookie=$TOKEN" | jq .data.template)
+        if [ $TEMPLATE_PROPERTY != 1 ]; then
+          count=$((count+1))
+          echo "[CurrentSubnetHosts]"             >> $INVENTORY_DIR/generatedHostsFile
+	  echo "subnetHost$count vmid=$VMID"      >> $INVENTORY_DIR/generatedHostsFile
+        fi
       fi
     done
 done
